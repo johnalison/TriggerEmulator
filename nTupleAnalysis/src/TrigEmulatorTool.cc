@@ -16,10 +16,21 @@ TrigEmulatorTool::TrigEmulatorTool(std::string name, int mode, int nToys, bool d
     m_PFJet.insert(std::make_pair(m_PFJet_trigNames.at(i),new HLTJetEmulator("PFJ"+m_PFJet_trigNames.at(i),m_PFJet_p0.at(i), m_PFJet_p1.at(i), m_PFJet_trigThresholds.at(i),m_mode)));
   }
 
+  for(unsigned int i = 0; i < m_PFHt_trigNames.size(); ++i){
+    m_PFHt.insert(std::make_pair(m_PFHt_trigNames.at(i),new HLTHtEmulator("PFHt"+m_PFHt_trigNames.at(i),m_PFHt_p0.at(i), m_PFHt_p1.at(i), m_PFHt_trigThresholds.at(i),m_mode)));
+  }
+
 }
 
 
 void TrigEmulatorTool::AddTrig(std::string trigName,  const std::vector<std::string>&  PFJetName, const std::vector<unsigned int>& PFJetMult){
+  if(m_debug) cout << "TrigEmulatorTool::AddTrig Enter " << trigName << endl;
+  return AddTrig(trigName, "none", PFJetName, PFJetMult);
+}
+
+
+
+void TrigEmulatorTool::AddTrig(std::string trigName,  std::string HTName, const std::vector<std::string>&  PFJetName, const std::vector<unsigned int>& PFJetMult){
   if(m_debug) cout << "TrigEmulatorTool::AddTrig Enter " << trigName << endl;
   if(m_emulatedTrigMenu.find(trigName) != m_emulatedTrigMenu.end()){
     cout << "TrigEmulatorTool::AddTrig ERROR " << trigName << " already included " << endl;
@@ -28,7 +39,13 @@ void TrigEmulatorTool::AddTrig(std::string trigName,  const std::vector<std::str
   if(m_debug) cout << "TrigEmulatorTool::AddTrig ADding trig " << trigName << endl;
   assert(PFJetName.size() == PFJetMult.size());
 
-
+  
+  if(m_PFHt.find(HTName) == m_PFHt.end()){
+    cout << "TrigEmulatorTool::AddTrig ERROR PFHt " << HTName << " not defined " << endl;
+    assert(false);
+  }  
+  
+  HLTHtEmulator* thisPFHt = m_PFHt[HTName];
 
   if(m_debug) cout << "TrigEmulatorTool::AddTrig making vetor of  HLTJetEmulators " << endl;
   std::vector<HLTJetEmulator*> thisPFJets; 
@@ -40,15 +57,16 @@ void TrigEmulatorTool::AddTrig(std::string trigName,  const std::vector<std::str
 
     thisPFJets.push_back(m_PFJet[pf]);
   }
+
+
   if(m_debug) cout << "TrigEmulatorTool::AddTrig inserting  " << endl;
-  m_emulatedTrigMenu.insert(std::make_pair(trigName, new TrigEmulator(trigName, thisPFJets,  PFJetMult, m_nToys)));
+  m_emulatedTrigMenu.insert(std::make_pair(trigName, new TrigEmulator(trigName, thisPFHt, thisPFJets,  PFJetMult, m_nToys)));
 }
 
 
-void TrigEmulatorTool::Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets){
+void TrigEmulatorTool::Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht){
   for (auto trigIt=m_emulatedTrigMenu.begin(); trigIt!=m_emulatedTrigMenu.end(); ++trigIt)
-    trigIt->second->Fill(offline_jets);
-  //dafsd
+    trigIt->second->Fill(offline_jets, ht);
   return;
 }
 

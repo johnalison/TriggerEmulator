@@ -3,21 +3,16 @@
 
 using namespace TriggerEmulator;
 
-TrigEmulator::TrigEmulator(std::string name, std::vector<HLTJetEmulator* > thresholds, std::vector<unsigned int> mult, int nToys){
+TrigEmulator::TrigEmulator(std::string name, HLTHtEmulator* htThreshold, std::vector<HLTJetEmulator* > jetThresholds, std::vector<unsigned int> jetMultiplicities, int nToys){
   m_trigName = name;
-  m_jetThresholds = thresholds;
-  m_jetMultiplicities = mult;
+  m_htThreshold = htThreshold;
+  m_jetThresholds = jetThresholds;
+  m_jetMultiplicities = jetMultiplicities;
   m_nToys = nToys;
 }
 
-void TrigEmulator::Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets){
+void TrigEmulator::Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht){
 	
-//  //
-//  // Require seed to be fired
-//  //
-//  if(!event->HLT_PFJet_Results[trigSeed])
-//    return;
-
 
   for(unsigned int iToy = 0; iToy < m_nToys; ++iToy){
 
@@ -26,6 +21,15 @@ void TrigEmulator::Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets){
     //
     ++m_nTotal;
     bool passTrig = true;
+
+
+    //
+    //  Ht Cut 
+    //
+    if(ht > 0 && m_htThreshold){
+      if(!m_htThreshold->passHt(ht)) passTrig = false;
+    }
+
 
     //
     // Loop on all thresholds
