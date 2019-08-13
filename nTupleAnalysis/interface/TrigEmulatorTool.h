@@ -23,8 +23,32 @@ namespace TriggerEmulator {
 
     void AddTrig(std::string trigName,  const std::vector<std::string>&  PFJetName, const std::vector<unsigned int>& PFJetMult);
 
-    void AddTrig(std::string trigName,  std::string HTName,const std::vector<std::string>&  PFJetName, const std::vector<unsigned int>& PFJetMult);
+    void AddTrig(std::string trigName,  std::string HTName, const std::vector<std::string>&  PFJetName, const std::vector<unsigned int>& PFJetMult);
 
+    //
+    //  Sets decisions for all configured triggers (involves random numbers if mode == 1)
+    //
+    void SetDecisions(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht=-1);
+
+    //
+    //  Return the value set in SetDecisions.  (So must call SetDecisions before GetDecision/Passed
+    //
+    bool GetDecision (std::string trigName);
+    bool Passed      (std::string trigName) { return GetDecision(trigName); }
+
+    //
+    //  Sets weights for all configured triggers, which is the average nPass over nToys (involves random numbers if mode == 1)
+    //
+    void SetWeights(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht=-1);
+
+    //
+    //  Return the value set in SetWeights.  (So must call SetWeights before GetWeight)
+    //
+    float GetWeight (std::string trigName);
+
+    // 
+    //  For doing global run counting (Eg: in rate prediction)
+    //
     void Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht=-1);
 
     void dumpResults();
@@ -34,6 +58,8 @@ namespace TriggerEmulator {
     std::map<std::string, HLTHtEmulator*>  m_PFHt;
     std::map<std::string, HLTJetEmulator*> m_PFJet;
     std::map<std::string, TrigEmulator*>   m_emulatedTrigMenu;
+    std::map<std::string, bool>            m_emulatedDecisions;
+    std::map<std::string, float>           m_emulatedWeights;
 
     std::string m_name;
     int m_nToys;
@@ -66,3 +92,4 @@ namespace TriggerEmulator {
 }
 
 #endif // TrigEmulator_H
+

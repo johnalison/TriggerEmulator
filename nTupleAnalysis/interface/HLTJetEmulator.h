@@ -1,3 +1,4 @@
+
 // -*- C++ -*-
 #if !defined(HLTJetEmulator_H)
 #define HLTJetEmulator_H

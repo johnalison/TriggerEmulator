@@ -11,8 +11,63 @@ TrigEmulator::TrigEmulator(std::string name, HLTHtEmulator* htThreshold, std::ve
   m_nToys = nToys;
 }
 
+bool TrigEmulator::passTrig(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht){
+
+  //
+  //  Ht Cut 
+  //
+  if(ht > 0 && m_htThreshold){
+    if(!m_htThreshold->passHt(ht)) 
+      return false;
+  }
+
+
+  //
+  // Loop on all thresholds
+  //
+  for(unsigned int iThres = 0; iThres < m_jetThresholds.size(); ++iThres){
+    HLTJetEmulator* HLTJet = m_jetThresholds.at(iThres);
+          
+    unsigned int nJetsPassed = 0;
+      
+    //
+    // Count passing jets
+    //
+    for(const nTupleAnalysis::jetPtr &jet: offline_jets){
+      if(HLTJet->passJet(jet->pt)) ++nJetsPassed;
+    }
+      
+    //
+    //  Impose trigger cut
+    //
+    if(nJetsPassed < m_jetMultiplicities.at(iThres))
+      return false;
+          
+  }
+
+  return true;
+}
+
+float TrigEmulator::calcWeight(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht){
+
+  unsigned int nPass  = 0;
+  //unsigned int nTot   = 0;
+  
+  for(unsigned int iToy = 0; iToy < m_nToys; ++iToy){
+
+    // 
+    // Count all events
+    //
+    if(passTrig(offline_jets, ht))
+      ++nPass;
+  }
+
+  return float(nPass)/m_nToys;
+}
+
+
+
 void TrigEmulator::Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht){
-	
 
   for(unsigned int iToy = 0; iToy < m_nToys; ++iToy){
 
@@ -20,41 +75,7 @@ void TrigEmulator::Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets, float 
     // Count all events
     //
     ++m_nTotal;
-    bool passTrig = true;
-
-
-    //
-    //  Ht Cut 
-    //
-    if(ht > 0 && m_htThreshold){
-      if(!m_htThreshold->passHt(ht)) passTrig = false;
-    }
-
-
-    //
-    // Loop on all thresholds
-    //
-    for(unsigned int iThres = 0; iThres < m_jetThresholds.size(); ++iThres){
-      HLTJetEmulator* HLTJet = m_jetThresholds.at(iThres);
-          
-      unsigned int nJetsPassed = 0;
-      
-      //
-      // Count passing jets
-      //
-      for(const nTupleAnalysis::jetPtr &jet: offline_jets){
-	if(HLTJet->passJet(jet->pt)) ++nJetsPassed;
-      }
-      
-      //
-      //  Impose trigger cut
-      //
-      if(nJetsPassed < m_jetMultiplicities.at(iThres))
-	passTrig = false;
-          
-    }
-        
-    if(passTrig)
+    if(passTrig(offline_jets, ht))
       ++m_nPass;
   }
 

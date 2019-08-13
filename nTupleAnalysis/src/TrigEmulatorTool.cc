@@ -60,7 +60,49 @@ void TrigEmulatorTool::AddTrig(std::string trigName,  std::string HTName, const 
 
 
   if(m_debug) cout << "TrigEmulatorTool::AddTrig inserting  " << endl;
-  m_emulatedTrigMenu.insert(std::make_pair(trigName, new TrigEmulator(trigName, thisPFHt, thisPFJets,  PFJetMult, m_nToys)));
+  m_emulatedTrigMenu .insert(std::make_pair(trigName, new TrigEmulator(trigName, thisPFHt, thisPFJets,  PFJetMult, m_nToys)));
+  m_emulatedDecisions.insert(std::make_pair(trigName, false));
+  m_emulatedWeights  .insert(std::make_pair(trigName, 0.0));
+  
+}
+
+void TrigEmulatorTool::SetDecisions(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht){
+  for (auto trigIt=m_emulatedTrigMenu.begin(); trigIt!=m_emulatedTrigMenu.end(); ++trigIt){
+    if(trigIt->second->passTrig(offline_jets, ht)){
+      m_emulatedDecisions[trigIt->first] = true;
+    }else{
+      m_emulatedDecisions[trigIt->first] = false;
+    }
+    
+  }
+  return;
+}
+
+
+
+bool TrigEmulatorTool::GetDecision(std::string trigName){
+  if(m_emulatedDecisions.find(trigName) == m_emulatedDecisions.end()){
+    cout << "TrigEmulatorTool::GetDecisions ERROR " << trigName << " not defined. Returning false " << endl;
+    return false;
+  }
+  return m_emulatedDecisions[trigName];
+}
+
+
+void TrigEmulatorTool::SetWeights(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht){
+  for (auto trigIt=m_emulatedTrigMenu.begin(); trigIt!=m_emulatedTrigMenu.end(); ++trigIt){
+    m_emulatedWeights[trigIt->first] = trigIt->second->calcWeight(offline_jets, ht);
+  }
+  return;
+}
+
+
+float TrigEmulatorTool::GetWeight(std::string trigName){
+  if(m_emulatedWeights.find(trigName) == m_emulatedWeights.end()){
+    cout << "TrigEmulatorTool::GetWeight ERROR " << trigName << " not defined. Returning 0.0 " << endl;
+    return 0.0;
+  }
+  return m_emulatedWeights[trigName];
 }
 
 

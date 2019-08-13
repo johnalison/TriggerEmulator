@@ -18,6 +18,19 @@ namespace TriggerEmulator {
 
     TrigEmulator(std::string name, HLTHtEmulator* htThreshold, std::vector<HLTJetEmulator* > jetThresholds, std::vector<unsigned int> jetMultiplicities, int nToys=1000);
 
+    //
+    //  Determine if a given event fired (invloves random number if mode=1)
+    //
+    bool passTrig(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht=-1);
+
+    //
+    //  Calculate weight for trigger, average nPass over nToys (involves random numbers if mode == 1)
+    //
+    float calcWeight(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht=-1);
+
+    // 
+    //  For doing global run counting (Eg: in rate prediction)
+    //
     void Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht=-1);
 
     void dumpResults();
