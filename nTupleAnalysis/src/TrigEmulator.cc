@@ -3,11 +3,17 @@
 
 using namespace TriggerEmulator;
 
-TrigEmulator::TrigEmulator(std::string name, HLTHtEmulator* htThreshold, std::vector<HLTJetEmulator* > jetThresholds, std::vector<unsigned int> jetMultiplicities, int nToys){
+TrigEmulator::TrigEmulator(std::string name, 
+			   HLTHtEmulator* htThreshold, 
+			   std::vector<HLTJetEmulator* > jetThresholds, std::vector<unsigned int> jetMultiplicities, 
+			   HLTBTagEmulator* bTagOpPoint, unsigned int bTagMultiplicities,
+			   int nToys){
   m_trigName = name;
   m_htThreshold = htThreshold;
   m_jetThresholds = jetThresholds;
   m_jetMultiplicities = jetMultiplicities;
+  m_bTagOpPoint = bTagOpPoint;
+  m_bTagMultiplicities = bTagMultiplicities;
   m_nToys = nToys;
 }
 
@@ -44,6 +50,24 @@ bool TrigEmulator::passTrig(std::vector<nTupleAnalysis::jetPtr> offline_jets, fl
       return false;
           
   }
+
+  //
+  //  Apply BTag Operating Points
+  //
+  unsigned int nJetsPassBTag = 0;
+      
+  //
+  // Count passing jets
+  //
+  for(const nTupleAnalysis::jetPtr &jet: offline_jets){
+    if(m_bTagOpPoint->passJet(jet->pt)) ++nJetsPassBTag;
+  }
+      
+  //
+  //  Impose trigger cut
+  //
+  if(nJetsPassBTag < m_bTagMultiplicities)
+    return false;
 
   return true;
 }
