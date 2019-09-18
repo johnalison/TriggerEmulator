@@ -90,9 +90,9 @@ namespace TriggerEmulator {
     //
     //  PF BTag Emulator
     //
-    std::vector<std::string> m_PFBTag_trigNames = {"none", "2018", "2017"};   
-    std::vector<std::string> m_PFBTag_fileNames = {"none", "2018", "2017"};   
-    std::vector<std::string> m_PFBTag_histNames = {"none", "2018", "2017"};   
+    std::vector<std::string> m_PFBTag_trigNames = {"none", "2018",                                              "2017"};   
+    std::vector<std::string> m_PFBTag_fileNames = {"none", "EffOnlineWrtOffline2017.root",                      "EffOnlineWrtOffline2017.root"};   
+    std::vector<std::string> m_PFBTag_histNames = {"none", "Eff_Data_offJetsMedDeepFlav_matchedPFDeepCSV_pt_m", "Eff_Data_offJetsMedDeepFlav_matchedPFCSV_pt_m"};   
     
 
     //

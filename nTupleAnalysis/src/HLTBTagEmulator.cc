@@ -4,22 +4,41 @@
 #include <TRandom3.h>
 #include <TFile.h>
 #include <TSystem.h>
+#include <iostream>
 
 
 using namespace TriggerEmulator;
 
-HLTBTagEmulator::HLTBTagEmulator(std::string tagName, std::string fileName, std::string histName){
+HLTBTagEmulator::HLTBTagEmulator(std::string tagName, std::string fileName, std::string histName, bool debug){
+  if(debug) std::cout << "HLTBTagEmulator:: creating " << tagName << " from File: " << fileName << " and histogram " << histName << std::endl;
   name = tagName;
   m_rand = new TRandom3();
-  
-  TFile* inputFile = new TFile(gSystem->ExpandPathName("$CMSSW_BASE/src/TriggerEmulator/nTupleAnalysis/data/EffOnlineWrtOffline2017.root"),"READ");
-  inputFile->ls();
 
-  TGraphAsymmErrors* relativeEff = (TGraphAsymmErrors*)("Eff_Data_offJetsMedDeepFlav_matchedPFDeepCSV_pt_m");
+  if(fileName=="none"){
+    m_lowBinEdge .push_back(-1.0);
+    m_eff        .push_back( 1.0);
+    m_effErr     .push_back( 0.0);
+    return;
+  }
   
+  TFile* inputFile = new TFile(gSystem->ExpandPathName(("$CMSSW_BASE/src/TriggerEmulator/nTupleAnalysis/data/"+fileName).c_str()),"READ");
+  if(debug) inputFile->ls();
+
+  TGraphAsymmErrors* relativeEff = dynamic_cast<TGraphAsymmErrors*>(inputFile->Get(histName.c_str()));
+  assert(relativeEff && "Failed to retrieve histogram");
+  if(debug) std::cout << "relativeEff  is " << relativeEff << std::endl;
+
+  if(debug){
+    std::cout << "Filling the bims" << std::endl;  
+    std::cout << relativeEff->GetN() << std::endl;  
+  }
+
+  assert(relativeEff->GetN() && "histogram empty");
+
   unsigned int nBins = relativeEff->GetN();
   for(unsigned int iBin = 0; iBin<nBins; ++iBin){
     double eff, pt;
+
     relativeEff->GetPoint(iBin, pt, eff);
     //float pt_low   = relativeEff->GetErrorXlow(iBin);
     float pt_high  = relativeEff->GetErrorXhigh(iBin);
@@ -27,6 +46,7 @@ HLTBTagEmulator::HLTBTagEmulator(std::string tagName, std::string fileName, std:
     float err_high = relativeEff->GetErrorYhigh(iBin);
     float err_ave  = (err_low+err_high)/2;
     float error_total = err_ave;
+    if(debug) std::cout << "Getting Point " << iBin << std::endl;  
 
     //if(sf_tag){
     //  double sf, ptSF;
@@ -50,9 +70,10 @@ HLTBTagEmulator::HLTBTagEmulator(std::string tagName, std::string fileName, std:
   }
   
 
-
+  if(debug) std::cout << "Closing ROOTFile" << std::endl;
   inputFile->Close();
   delete inputFile;
+  if(debug) std::cout << "Left HLTBTagEmulator" << std::endl;
 }
 
 bool HLTBTagEmulator::passJet(float pt, float smearFactor){
