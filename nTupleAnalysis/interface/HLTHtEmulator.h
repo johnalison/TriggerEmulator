@@ -15,7 +15,7 @@ namespace TriggerEmulator {
 
     HLTHtEmulator(std::string name, float p0, float p1, float htCut, int mode);
 
-    bool passHt(float ht);
+    bool passHt(float ht, float seedOffset=1.0);
 
     std::string m_name;
 

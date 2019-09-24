@@ -26,17 +26,17 @@ namespace TriggerEmulator {
     //
     //  Determine if a given event fired (invloves random number if mode=1)
     //
-    bool passTrig(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht=-1);
+    bool passTrig(std::vector<nTupleAnalysis::jetPtr> offline_jets, std::vector<nTupleAnalysis::jetPtr> offline_btagged_jets, float ht=-1, float seedOffset=1.0);
 
     //
     //  Calculate weight for trigger, average nPass over nToys (involves random numbers if mode == 1)
     //
-    float calcWeight(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht=-1);
+    float calcWeight(std::vector<nTupleAnalysis::jetPtr> offline_jets, std::vector<nTupleAnalysis::jetPtr> offline_btagged_jets, float ht=-1);
 
     // 
     //  For doing global run counting (Eg: in rate prediction)
     //
-    void Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht=-1);
+    void Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets, std::vector<nTupleAnalysis::jetPtr> offline_btagged_jets, float ht=-1);
 
     void dumpResults();
 

@@ -16,7 +16,7 @@ namespace TriggerEmulator {
 
     HLTJetEmulator(std::string jetName, float p0, float p1, float ptCut, int jetMode);
 
-    bool passJet(float pt);
+    bool passJet(float pt, float seedOffset=1.0);
 
     std::string name;
 

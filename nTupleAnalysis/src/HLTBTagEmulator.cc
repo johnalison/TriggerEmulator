@@ -76,7 +76,7 @@ HLTBTagEmulator::HLTBTagEmulator(std::string tagName, std::string fileName, std:
   if(debug) std::cout << "Left HLTBTagEmulator" << std::endl;
 }
 
-bool HLTBTagEmulator::passJet(float pt, float smearFactor){
+bool HLTBTagEmulator::passJet(float pt, float seedOffset, float smearFactor){
 
   //thisTagEff = tagEff->Eval(pt)*scaleFactor;
   float eff    = -99;
@@ -97,7 +97,8 @@ bool HLTBTagEmulator::passJet(float pt, float smearFactor){
   assert((eff > 0) && "ERROR eff < 0");
 
   float thisTagEff = eff + effErr*smearFactor;
-
+  int seed = (int)(pt * seedOffset + pt); 
+  //m_rand->SetSeed(seed);
   if(thisTagEff > m_rand->Rndm())
     return true;
 

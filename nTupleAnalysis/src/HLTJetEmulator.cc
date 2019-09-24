@@ -17,7 +17,7 @@ HLTJetEmulator::HLTJetEmulator(std::string jetName, float p0, float p1, float pt
   flatPTCut = ptCut;
 }
 
-bool HLTJetEmulator::passJet(float pt){
+bool HLTJetEmulator::passJet(float pt, float seedOffset){
   if(mode == 0){
     if(pt > flatPTCut) {
       return true;
@@ -26,6 +26,9 @@ bool HLTJetEmulator::passJet(float pt){
   }
 
   float probPassTrig = sigmoid->Eval(pt);
+  //float thisTagEff = eff + effErr*smearFactor;
+  int seed = (int)(pt * seedOffset + pt); 
+  //rand->SetSeed(seed);
   if(probPassTrig > rand->Rndm())
     return true;
   return false;

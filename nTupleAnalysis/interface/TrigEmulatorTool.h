@@ -37,7 +37,7 @@ namespace TriggerEmulator {
     //
     //  Sets decisions for all configured triggers (involves random numbers if mode == 1)
     //
-    void SetDecisions(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht=-1);
+    void SetDecisions(std::vector<nTupleAnalysis::jetPtr> offline_jets, std::vector<nTupleAnalysis::jetPtr> offline_btagged_jets, float ht=-1);
 
     //
     //  Return the value set in SetDecisions.  (So must call SetDecisions before GetDecision/Passed
@@ -48,7 +48,7 @@ namespace TriggerEmulator {
     //
     //  Sets weights for all configured triggers, which is the average nPass over nToys (involves random numbers if mode == 1)
     //
-    void SetWeights(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht=-1);
+    void SetWeights(std::vector<nTupleAnalysis::jetPtr> offline_jets, std::vector<nTupleAnalysis::jetPtr> offline_btagged_jets, float ht=-1);
 
     //
     //  Return the value set in SetWeights.  (So must call SetWeights before GetWeight)
@@ -58,7 +58,7 @@ namespace TriggerEmulator {
     // 
     //  For doing global run counting (Eg: in rate prediction)
     //
-    void Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht=-1);
+    void Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets, std::vector<nTupleAnalysis::jetPtr> offline_btagged_jets, float ht=-1);
 
     void dumpResults();
 
@@ -91,7 +91,7 @@ namespace TriggerEmulator {
     //  PF BTag Emulator
     //
     std::vector<std::string> m_PFBTag_trigNames = {"none", "2018",                                              "2017"};   
-    std::vector<std::string> m_PFBTag_fileNames = {"none", "EffOnlineWrtOffline2017.root",                      "EffOnlineWrtOffline2017.root"};   
+    std::vector<std::string> m_PFBTag_fileNames = {"none", "EffOnlineWrtOffline2018.root",                      "EffOnlineWrtOffline2017.root"};   
     std::vector<std::string> m_PFBTag_histNames = {"none", "Eff_Data_offJetsMedDeepFlav_matchedPFDeepCSV_pt_m", "Eff_Data_offJetsMedDeepFlav_matchedPFCSV_pt_m"};   
     
 

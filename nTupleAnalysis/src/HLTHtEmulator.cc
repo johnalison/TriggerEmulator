@@ -17,7 +17,7 @@ HLTHtEmulator::HLTHtEmulator(std::string name, float p0, float p1, float htCut, 
   m_htCut = htCut;
 }
 
-bool HLTHtEmulator::passHt(float ht){
+bool HLTHtEmulator::passHt(float ht, float seedOffset){
   if(m_mode == 0){
     if(ht > m_htCut) {
       return true;
@@ -26,6 +26,9 @@ bool HLTHtEmulator::passHt(float ht){
   }
 
   float probPassTrig = m_sigmoid->Eval(ht);
+  //float thisTagEff = eff + effErr*smearFactor;
+  int seed = (int)(ht * seedOffset + ht); 
+  //m_rand->SetSeed(seed);
   if(probPassTrig > m_rand->Rndm())
     return true;
   return false;

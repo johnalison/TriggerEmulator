@@ -105,9 +105,9 @@ void TrigEmulatorTool::AddTrig(std::string trigName,  std::string HTName,
   
 }
 
-void TrigEmulatorTool::SetDecisions(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht){
+void TrigEmulatorTool::SetDecisions(std::vector<nTupleAnalysis::jetPtr> offline_jets, std::vector<nTupleAnalysis::jetPtr> offline_btagged_jets, float ht){
   for (auto trigIt=m_emulatedTrigMenu.begin(); trigIt!=m_emulatedTrigMenu.end(); ++trigIt){
-    if(trigIt->second->passTrig(offline_jets, ht)){
+    if(trigIt->second->passTrig(offline_jets, offline_btagged_jets, ht)){
       m_emulatedDecisions[trigIt->first] = true;
     }else{
       m_emulatedDecisions[trigIt->first] = false;
@@ -128,9 +128,9 @@ bool TrigEmulatorTool::GetDecision(std::string trigName){
 }
 
 
-void TrigEmulatorTool::SetWeights(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht){
+void TrigEmulatorTool::SetWeights(std::vector<nTupleAnalysis::jetPtr> offline_jets, std::vector<nTupleAnalysis::jetPtr> offline_btagged_jets, float ht){
   for (auto trigIt=m_emulatedTrigMenu.begin(); trigIt!=m_emulatedTrigMenu.end(); ++trigIt){
-    m_emulatedWeights[trigIt->first] = trigIt->second->calcWeight(offline_jets, ht);
+    m_emulatedWeights[trigIt->first] = trigIt->second->calcWeight(offline_jets, offline_btagged_jets, ht);
   }
   return;
 }
@@ -145,9 +145,9 @@ float TrigEmulatorTool::GetWeight(std::string trigName){
 }
 
 
-void TrigEmulatorTool::Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets, float ht){
+void TrigEmulatorTool::Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets, std::vector<nTupleAnalysis::jetPtr> offline_btagged_jets, float ht){
   for (auto trigIt=m_emulatedTrigMenu.begin(); trigIt!=m_emulatedTrigMenu.end(); ++trigIt)
-    trigIt->second->Fill(offline_jets, ht);
+    trigIt->second->Fill(offline_jets, offline_btagged_jets, ht);
   return;
 }
 
