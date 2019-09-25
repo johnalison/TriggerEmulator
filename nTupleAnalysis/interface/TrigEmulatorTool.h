@@ -7,8 +7,7 @@
 #include "TriggerEmulator/nTupleAnalysis/interface/HLTBTagEmulator.h"
 #include "TriggerEmulator/nTupleAnalysis/interface/HLTHtEmulator.h"
 #include <string>
-#include "nTupleAnalysis/baseClasses/interface/jetData.h"
-
+#include <map>
 
 
 namespace TriggerEmulator {
@@ -37,7 +36,7 @@ namespace TriggerEmulator {
     //
     //  Sets decisions for all configured triggers (involves random numbers if mode == 1)
     //
-    void SetDecisions(std::vector<nTupleAnalysis::jetPtr> offline_jets, std::vector<nTupleAnalysis::jetPtr> offline_btagged_jets, float ht=-1);
+    void SetDecisions(std::vector<float> offline_jet_pts, std::vector<float> offline_btagged_jet_pts, float ht=-1);
 
     //
     //  Return the value set in SetDecisions.  (So must call SetDecisions before GetDecision/Passed
@@ -48,7 +47,7 @@ namespace TriggerEmulator {
     //
     //  Sets weights for all configured triggers, which is the average nPass over nToys (involves random numbers if mode == 1)
     //
-    void SetWeights(std::vector<nTupleAnalysis::jetPtr> offline_jets, std::vector<nTupleAnalysis::jetPtr> offline_btagged_jets, float ht=-1);
+    void SetWeights(std::vector<float> offline_jet_pts, std::vector<float> offline_btagged_jet_pts, float ht=-1);
 
     //
     //  Return the value set in SetWeights.  (So must call SetWeights before GetWeight)
@@ -58,7 +57,7 @@ namespace TriggerEmulator {
     // 
     //  For doing global run counting (Eg: in rate prediction)
     //
-    void Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets, std::vector<nTupleAnalysis::jetPtr> offline_btagged_jets, float ht=-1);
+    void Fill(std::vector<float> offline_jet_pts, std::vector<float> offline_btagged_jet_pts, float ht=-1);
 
     void dumpResults();
 

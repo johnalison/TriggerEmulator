@@ -1,5 +1,5 @@
 #include "TriggerEmulator/nTupleAnalysis/interface/TrigEmulator.h"
-
+#include <iostream>
 
 using namespace TriggerEmulator;
 using std::cout; using std::endl;
@@ -17,7 +17,7 @@ TrigEmulator::TrigEmulator(std::string name,
   m_nToys = nToys;
 }
 
-bool TrigEmulator::passTrig(std::vector<nTupleAnalysis::jetPtr> offline_jets, std::vector<nTupleAnalysis::jetPtr> offline_btagged_jets, float ht, float seedOffset){
+bool TrigEmulator::passTrig(std::vector<float> offline_jet_pts, std::vector<float> offline_btagged_jet_pts, float ht, float seedOffset){
   //std::cout << "TrigEmulator:: " << m_trigName << " ht " << ht << std::endl;
 
   //
@@ -42,8 +42,8 @@ bool TrigEmulator::passTrig(std::vector<nTupleAnalysis::jetPtr> offline_jets, st
     //
     // Count passing jets
     //
-    for(const nTupleAnalysis::jetPtr &jet: offline_jets){
-      if(HLTJet->passJet(jet->pt,seedOffset)) ++nJetsPassed;
+    for(float jet_pt: offline_jet_pts){
+      if(HLTJet->passJet(jet_pt,seedOffset)) ++nJetsPassed;
     }
       
     //
@@ -62,8 +62,8 @@ bool TrigEmulator::passTrig(std::vector<nTupleAnalysis::jetPtr> offline_jets, st
   //
   // Count passing jets
   //
-  for(const nTupleAnalysis::jetPtr &bjet: offline_btagged_jets){
-    if(m_bTagOpPoint->passJet(bjet->pt,seedOffset)) ++nJetsPassBTag;
+  for(float bjet_pt: offline_btagged_jet_pts){
+    if(m_bTagOpPoint->passJet(bjet_pt,seedOffset)) ++nJetsPassBTag;
   }
       
   //
@@ -76,7 +76,7 @@ bool TrigEmulator::passTrig(std::vector<nTupleAnalysis::jetPtr> offline_jets, st
   return true;
 }
 
-float TrigEmulator::calcWeight(std::vector<nTupleAnalysis::jetPtr> offline_jets, std::vector<nTupleAnalysis::jetPtr> offline_btagged_jets, float ht){
+float TrigEmulator::calcWeight(std::vector<float> offline_jet_pts, std::vector<float> offline_btagged_jet_pts, float ht){
 
   unsigned int nPass  = 0;
   
@@ -85,7 +85,7 @@ float TrigEmulator::calcWeight(std::vector<nTupleAnalysis::jetPtr> offline_jets,
     // 
     // Count all events
     //
-    if(passTrig(offline_jets, offline_btagged_jets, ht, iToy))
+    if(passTrig(offline_jet_pts, offline_btagged_jet_pts, ht, iToy))
       ++nPass;
   }
   //cout << "TrigEmulator::calcWeight is " << float(nPass)/m_nToys << endl;
@@ -94,7 +94,7 @@ float TrigEmulator::calcWeight(std::vector<nTupleAnalysis::jetPtr> offline_jets,
 
 
 
-void TrigEmulator::Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets, std::vector<nTupleAnalysis::jetPtr> offline_btagged_jets, float ht){
+void TrigEmulator::Fill(std::vector<float> offline_jet_pts, std::vector<float> offline_btagged_jet_pts, float ht){
 
   for(unsigned int iToy = 0; iToy < m_nToys; ++iToy){
 
@@ -102,7 +102,7 @@ void TrigEmulator::Fill(std::vector<nTupleAnalysis::jetPtr> offline_jets, std::v
     // Count all events
     //
     ++m_nTotal;
-    if(passTrig(offline_jets, offline_btagged_jets, ht, iToy))
+    if(passTrig(offline_jet_pts, offline_btagged_jet_pts, ht, iToy))
       ++m_nPass;
   }
 
