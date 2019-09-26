@@ -15,7 +15,7 @@ HLTBTagEmulator::HLTBTagEmulator(std::string tagName, std::string fileName, std:
   m_rand = new TRandom3();
 
   if(fileName=="none"){
-    m_lowBinEdge .push_back(-1.0);
+    m_highBinEdge.push_back(-1.0);
     m_eff        .push_back( 1.0);
     m_effErr     .push_back( 0.0);
     return;
@@ -64,7 +64,7 @@ HLTBTagEmulator::HLTBTagEmulator(std::string tagName, std::string fileName, std:
     //cout << "\tiBin " << iBin << " pt: " << pt-pt_low << " - " << pt << " - " << pt+pt_high
     //     << " eff: " << eff << " +/- " << error_total
     //     << endl;
-    m_lowBinEdge .push_back(pt-pt_high);
+    m_highBinEdge .push_back(pt+pt_high);
     m_eff        .push_back(eff);
     m_effErr     .push_back(error_total);
   }
@@ -83,8 +83,8 @@ bool HLTBTagEmulator::passJet(float pt, float seedOffset, float smearFactor){
   //float sf     = -99;
   float effErr = -99;
 
-  for(unsigned int iBin = 0; iBin< m_lowBinEdge.size(); ++iBin){
-    if(pt > m_lowBinEdge.at(iBin)){
+  for(unsigned int iBin = 0; iBin< m_highBinEdge.size(); ++iBin){
+    if(pt < m_highBinEdge.at(iBin)){
       eff    = m_eff   .at(iBin);
       effErr = m_effErr.at(iBin);
       break;

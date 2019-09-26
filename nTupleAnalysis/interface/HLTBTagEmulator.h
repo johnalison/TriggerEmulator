@@ -6,8 +6,6 @@
 #include <vector>
 
 class TRandom3;
-class TGraphAsymmErrors;
-
 
 namespace TriggerEmulator {
 
@@ -26,7 +24,7 @@ namespace TriggerEmulator {
     TRandom3*           m_rand        = nullptr;
 
     // EFficeincies and Uncertianties
-    std::vector<double> m_lowBinEdge;
+    std::vector<double> m_highBinEdge;
     std::vector<double> m_eff;
     std::vector<double> m_effErr;
   };

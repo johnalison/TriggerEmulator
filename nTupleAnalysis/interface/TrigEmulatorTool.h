@@ -101,6 +101,8 @@ namespace TriggerEmulator {
     std::vector<float> m_PFHt_trigThresholds  = {0,       180. ,    250.,     330.,     370.,     430.,    510.,    590.,     680.,    780.,     890.,    1050.};
     std::vector<float> m_PFHt_p0              = {10,      0.0319,   0.0343,   0.03,     0.0334,  0.0347,  0.0334,   0.0313,   0.0294,  0.0283,  0.0268,     0.0273};
     std::vector<float> m_PFHt_p1              = {-300,    213.0,    294.1 ,   401.8,    422.1 ,   483.4 ,   566.9 ,  650.0 ,    743.7 , 847.4 ,  956.5 ,    1113.};
+    std::vector<std::string> m_PFHt_fileNames = {"none", "none",    "none",   "HT_EffOnlineWrtOffline2018.root", "none", "none",    "none", "none", "none",    "none", "none", "none"};   
+    std::vector<std::string> m_PFHt_histNames = {"none", "none",    "none",   "hT30_pass_4b_rebin_ratio" , "none", "none",    "none", "none", "none",    "none", "none", "none"};   
 
   };
 

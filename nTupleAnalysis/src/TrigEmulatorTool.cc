@@ -21,7 +21,8 @@ TrigEmulatorTool::TrigEmulatorTool(std::string name, int mode, int nToys, bool d
   //  Emulated HT Thresholds
   //
   for(unsigned int i = 0; i < m_PFHt_trigNames.size(); ++i){
-    m_PFHt.insert(std::make_pair(m_PFHt_trigNames.at(i),new HLTHtEmulator("PFHt"+m_PFHt_trigNames.at(i),m_PFHt_p0.at(i), m_PFHt_p1.at(i), m_PFHt_trigThresholds.at(i),m_mode)));
+    m_PFHt.insert(std::make_pair(m_PFHt_trigNames.at(i),new HLTHtEmulator("PFHt"+m_PFHt_trigNames.at(i),m_PFHt_p0.at(i), m_PFHt_p1.at(i), m_PFHt_trigThresholds.at(i),2,
+									  m_PFHt_fileNames.at(i),m_PFHt_histNames.at(i))));
   }
 
   //
