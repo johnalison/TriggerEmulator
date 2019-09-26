@@ -21,7 +21,7 @@ HLTHtEmulator::HLTHtEmulator(std::string name, float p0, float p1, float htCut, 
     m_sigmoid->SetParameters(p0, p1);
   }else if(m_mode == 2){
 
-    bool debug = true;
+    bool debug = false;
     
     if(fileName=="none"){
       m_highBinEdge.push_back(-1.0);
