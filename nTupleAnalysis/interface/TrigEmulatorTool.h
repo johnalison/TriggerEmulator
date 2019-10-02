@@ -80,11 +80,11 @@ namespace TriggerEmulator {
     //
     // PF Jet Config
     //
-    std::vector<std::string> m_PFJet_trigNames = {"15", "30", "40",  "45",   "50",  "60",   "75",   "80",   "90",   "100",   "105",  "110",   "120",  "140",  "200",  "260",  "320",   "400", "450",  "500","550"};
-    std::vector<float> m_PFJet_trigThresholds  = { 15,   30,   40. ,  45,     50,    60.,    75.,    80.,    90.,    100.,    105.,   110.,    120.,   140.,   200.,   260.,   320.,    400.,   450.,   500.,  550.};
+    std::vector<std::string> m_PFJet_trigNames = {"15", "30", "40",  "40wL1", "45",   "50",  "60",   "75",   "80",   "90",   "100",   "105",  "110",   "120",  "140",  "200",  "260",  "320",   "400", "450",  "500","550"};
+    std::vector<float> m_PFJet_trigThresholds  = { 15,   30,   40. ,  40.,     45,     50,    60.,    75.,    80.,    90.,    100.,    105.,   110.,    120.,   140.,   200.,   260.,   320.,    400.,   450.,   500.,  550.};
     // From Fits to Data 2018
-    std::vector<float> m_PFJet_p0              = {0.04, 0.04, 0.188,  0.211, 0.204,  0.188,  0.172,  0.169,  0.168,  0.158 ,  0.159,  0.157,   0.151,  0.144,  0.116,  0.149,  0.082,  0.100,   0.086,  0.085,  0.087};
-    std::vector<float> m_PFJet_p1              = {-310, -310, 42.5,   50.0,  56.0,   67.3,   83.8,   89.2,   100.0,  110.9,   116.3,  121.6,   132.0,  153.2,  215.2,  277.1,  336.5,  411.5,  462.3,  505.5,  559.1};
+    std::vector<float> m_PFJet_p0              = {0.04, 0.04, 0.188,  0.088,   0.211, 0.204,  0.188,  0.172,  0.169,  0.168,  0.158 ,  0.159,  0.157,   0.151,  0.144,  0.116,  0.149,  0.082,  0.100,   0.086,  0.085,  0.087};
+    std::vector<float> m_PFJet_p1              = {-310, -310, 42.5,   47.1,    50.0,  56.0,   67.3,   83.8,   89.2,   100.0,  110.9,   116.3,  121.6,   132.0,  153.2,  215.2,  277.1,  336.5,  411.5,  462.3,  505.5,  559.1};
 
     //
     //  PF BTag Emulator
@@ -97,12 +97,12 @@ namespace TriggerEmulator {
     //
     // PF Ht Config
     //
-    std::vector<std::string> m_PFHt_trigNames = {"none", "180",     "250",    "330",   "370",    "430",   "510",   "590",    "680",   "780",    "890",   "1050"};
-    std::vector<float> m_PFHt_trigThresholds  = {0,       180. ,    250.,     330.,     370.,     430.,    510.,    590.,     680.,    780.,     890.,    1050.};
-    std::vector<float> m_PFHt_p0              = {10,      0.0319,   0.0343,   0.03,     0.0334,  0.0347,  0.0334,   0.0313,   0.0294,  0.0283,  0.0268,     0.0273};
-    std::vector<float> m_PFHt_p1              = {-300,    213.0,    294.1 ,   401.8,    422.1 ,   483.4 ,   566.9 ,  650.0 ,    743.7 , 847.4 ,  956.5 ,    1113.};
-    std::vector<std::string> m_PFHt_fileNames = {"none", "none",    "none",   "HT_EffOnlineWrtOffline2018.root", "none", "none",    "none", "none", "none",    "none", "none", "none"};   
-    std::vector<std::string> m_PFHt_histNames = {"none", "none",    "none",   "hT30_pass_4b_rebin_ratio" , "none", "none",    "none", "none", "none",    "none", "none", "none"};   
+    std::vector<std::string> m_PFHt_trigNames = {"none", "180",     "250",   "330ZH",   "330",   "370",    "430",   "510",   "590",    "680",   "780",    "890",   "1050"};
+    std::vector<float> m_PFHt_trigThresholds  = {0,       180. ,    250.,    330.,      330.,     370.,     430.,    510.,    590.,     680.,    780.,     890.,    1050.};
+    std::vector<float> m_PFHt_p0              = {10,      0.0319,   0.0343,  0.051,     0.03,     0.0334,  0.0347,  0.0334,   0.0313,   0.0294,  0.0283,  0.0268,     0.0273};
+    std::vector<float> m_PFHt_p1              = {-300,    213.0,    294.1 ,  362.5,    401.8,    422.1 ,   483.4 ,   566.9 ,  650.0 ,    743.7 , 847.4 ,  956.5 ,    1113.};
+    std::vector<std::string> m_PFHt_fileNames = {"none", "none",    "none",  "none",   "HT_EffOnlineWrtOffline2018_v3.root", "none", "none",    "none", "none", "none",    "none", "none", "none"};   
+    std::vector<std::string> m_PFHt_histNames = {"none", "none",    "none",  "none",   "ht330_sel_3tag_pass_4b_rebin_ratio" , "none", "none",    "none", "none", "none",    "none", "none", "none"};   
 
   };
 

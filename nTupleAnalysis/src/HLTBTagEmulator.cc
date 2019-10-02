@@ -6,7 +6,7 @@
 #include <TSystem.h>
 #include <iostream>
 
-
+using std::cout; using std::endl;
 using namespace TriggerEmulator;
 
 HLTBTagEmulator::HLTBTagEmulator(std::string tagName, std::string fileName, std::string histName, bool debug){
@@ -20,7 +20,7 @@ HLTBTagEmulator::HLTBTagEmulator(std::string tagName, std::string fileName, std:
     m_effErr     .push_back( 0.0);
     return;
   }
-  
+
   TFile* inputFile = new TFile(gSystem->ExpandPathName(("$CMSSW_BASE/src/TriggerEmulator/nTupleAnalysis/data/"+fileName).c_str()),"READ");
   if(debug) inputFile->ls();
 
@@ -61,9 +61,10 @@ HLTBTagEmulator::HLTBTagEmulator(std::string tagName, std::string fileName, std:
     //  error_total = sqrt(err_ave*err_ave + errSF_ave*errSF_ave);
     //}
 
-    //cout << "\tiBin " << iBin << " pt: " << pt-pt_low << " - " << pt << " - " << pt+pt_high
-    //     << " eff: " << eff << " +/- " << error_total
-    //     << endl;
+    if(debug)
+      cout << "\tiBin " << iBin << " pt: " << pt-pt_high << " - " << pt << " - " << pt+pt_high
+	     << " eff: " << eff << " +/- " << error_total
+	     << endl;
     m_highBinEdge .push_back(pt+pt_high);
     m_eff        .push_back(eff);
     m_effErr     .push_back(error_total);
@@ -82,7 +83,7 @@ bool HLTBTagEmulator::passJet(float pt, float seedOffset, float smearFactor){
   float eff    = -99;
   //float sf     = -99;
   float effErr = -99;
-
+  //cout << " pt is " << pt << endl;
   for(unsigned int iBin = 0; iBin< m_highBinEdge.size(); ++iBin){
     if(pt < m_highBinEdge.at(iBin)){
       eff    = m_eff   .at(iBin);
@@ -95,6 +96,8 @@ bool HLTBTagEmulator::passJet(float pt, float seedOffset, float smearFactor){
     effErr = m_effErr.back();
   }
   assert((eff > 0) && "ERROR eff < 0");
+  //cout << " pt_eff is " << eff << endl;
+  
 
   float thisTagEff = eff + effErr*smearFactor;
   int seed = (int)(pt * seedOffset + pt); 
