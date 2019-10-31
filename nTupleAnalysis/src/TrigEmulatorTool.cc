@@ -14,7 +14,8 @@ TrigEmulatorTool::TrigEmulatorTool(std::string name, int mode, int nToys, bool d
   //  Emulated Jet Thresholds Triggers
   // 
   for(unsigned int i = 0; i < m_PFJet_trigNames.size(); ++i){
-    m_PFJet.insert(std::make_pair(m_PFJet_trigNames.at(i),new HLTJetEmulator("PFJ"+m_PFJet_trigNames.at(i),m_PFJet_p0.at(i), m_PFJet_p1.at(i), m_PFJet_trigThresholds.at(i),m_mode)));
+    //m_PFJet.insert(std::make_pair(m_PFJet_trigNames.at(i),new HLTJetEmulator("PFJ"+m_PFJet_trigNames.at(i),m_PFJet_p0.at(i), m_PFJet_p1.at(i), m_PFJet_trigThresholds.at(i),m_mode)));
+    m_PFJet.insert(std::make_pair(m_PFJet_trigNames.at(i),new HLTJetEmulator("PFJ"+m_PFJet_trigNames.at(i),m_PFJet_fileNames.at(i),m_PFJet_histNames.at(i),debug)));
   }
 
   //

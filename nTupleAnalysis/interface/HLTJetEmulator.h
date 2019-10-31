@@ -4,9 +4,9 @@
 #define HLTJetEmulator_H
 
 #include <string>
+#include <vector>
 
 class TRandom3;
-class TF1;
 
 namespace TriggerEmulator {
 
@@ -14,17 +14,23 @@ namespace TriggerEmulator {
       
   public:
 
-    HLTJetEmulator(std::string jetName, float p0, float p1, float ptCut, int jetMode);
+    HLTJetEmulator(std::string tagName, std::string fileName, std::string histName, bool debug=false);
 
-    bool passJet(float pt, float seedOffset=1.0);
+    bool passJet(float pt, float seedOffset=1.0, float smearFactor = 0.0);
 
     std::string name;
 
   private:
-    TRandom3*   rand = nullptr;
-    TF1*        sigmoid = nullptr;
-    int         mode            = 0; // Flat Pt Cut 
-    float       flatPTCut;
+    TRandom3*   m_rand = nullptr;
+
+    // EFficeincies and Uncertianties
+    std::vector<double> m_highBinEdge;
+    std::vector<double> m_eff;
+    std::vector<double> m_effErr;
+
+    //TF1*        sigmoid = nullptr;
+    //int         mode            = 0; // Flat Pt Cut 
+    //float       flatPTCut;
 
 
   };
