@@ -85,9 +85,10 @@ namespace TriggerEmulator {
     //// From Fits to Data 2018
     //std::vector<float> m_PFJet_p0              = {0.04, 0.04, 0.188,  0.088,   0.211, 0.204,  0.188,  0.172,  0.169,  0.168,  0.158 ,  0.159,  0.157,   0.151,  0.144,  0.116,  0.149,  0.082,  0.100,   0.086,  0.085,  0.087};
     //std::vector<float> m_PFJet_p1              = {-310, -310, 42.5,   47.1,    50.0,  56.0,   67.3,   83.8,   89.2,   100.0,  110.9,   116.3,  121.6,   132.0,  153.2,  215.2,  277.1,  336.5,  411.5,  462.3,  505.5,  559.1};
-    std::vector<std::string> m_PFJet_trigNames = {"40",                           "40wL140",                       "45",                            "45wL140",                         "60",                             "60wL155",                        "75",                       "75wL170"};			    
-    std::vector<std::string> m_PFJet_fileNames = {"EffOnlineWrtOffline_ZHMC.root","EffOnlineWrtOffline_ZHMC.root", "EffOnlineWrtOffline_ZHMC.root", "EffOnlineWrtOffline_ZHMC.root",   "EffOnlineWrtOffline_ZHMC.root", "EffOnlineWrtOffline_ZHMC.root",   "EffOnlineWrtOffline_ZHMC.root", "EffOnlineWrtOffline_ZHMC.root"};
-    std::vector<std::string> m_PFJet_histNames = {"matchedPt_h40_rebin_ratio",    "matchedPt_h40_l40_rebin_ratio", "matchedPt_h45_rebin_ratio",      "matchedPt_h45_l40_rebin_ratio",   "matchedPt_h60_rebin_ratio",    "matchedPt_h60_l55_rebin_ratio",   "matchedPt_h75_rebin_ratio", "matchedPt_h75_l70_rebin_ratio"};
+    std::vector<std::string> m_PFJet_trigNames = {"30", "35" "40", "40wL140", "45","45wL140","50", "60","60wL155","70","75","75wL170","80","90","100"};			    
+    //std::vector<std::string> m_PFJet_fileNames = {"EffOnlineWrtOffline_ZHMC.root", "EffOnlineWrtOffline_ZHMC.root", "EffOnlineWrtOffline_ZHMC.root",   "EffOnlineWrtOffline_ZHMC.root", "EffOnlineWrtOffline_ZHMC.root",   "EffOnlineWrtOffline_ZHMC.root", "EffOnlineWrtOffline_ZHMC.root"};
+    std::string m_PFJet_fileName = "trigStudy_ZH4b2018_EffOnlineWrtOffline.root";
+    std::vector<std::string> m_PFJet_histNames = {"matchedPt_h30_rebin_ratio","matchedPt_h35_rebin_ratio","matchedPt_h40_rebin_ratio",    "matchedPt_h40_l40_rebin_ratio", "matchedPt_h45_rebin_ratio",      "matchedPt_h45_l40_rebin_ratio",  "matchedPt_h50_rebin_ratio", "matchedPt_h60_rebin_ratio",    "matchedPt_h60_l55_rebin_ratio",  "matchedPt_h70_rebin_ratio", "matchedPt_h75_rebin_ratio", "matchedPt_h75_l70_rebin_ratio","matchedPt_h80_rebin_ratio","matchedPt_h90_rebin_ratio","matchedPt_h100_rebin_ratio",};
 
 
     //
