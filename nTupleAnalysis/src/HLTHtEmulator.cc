@@ -5,6 +5,7 @@
 #include <TSystem.h>
 #include <TFile.h>
 #include <TGraphAsymmErrors.h>
+#include <assert.h>
 
 using namespace TriggerEmulator;
 using std::cout; using std::endl;

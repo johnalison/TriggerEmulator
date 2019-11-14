@@ -5,6 +5,7 @@
 #include <TFile.h>
 #include <TSystem.h>
 #include <iostream>
+#include <assert.h>
 
 using std::cout; using std::endl;
 using namespace TriggerEmulator;
