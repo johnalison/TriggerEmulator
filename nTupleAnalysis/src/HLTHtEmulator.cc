@@ -10,107 +10,99 @@
 using namespace TriggerEmulator;
 using std::cout; using std::endl;
 
-HLTHtEmulator::HLTHtEmulator(std::string name, float p0, float p1, float htCut, int mode, std::string fileName, std::string histName){
-  m_name = name;
+HLTHtEmulator::HLTHtEmulator(std::string histName_, std::string fileName_, bool debug){
+  histName = histName_;
+  fileName = fileName_;
+
   m_rand = new TRandom3();
-  m_mode = mode;
+  //m_mode = mode;
+  m_debug = debug;
 
-  if(m_mode == 0){
-    m_htCut = htCut;
-  }else if(m_mode == 1){
-    m_sigmoid = new TF1(("func"+name).c_str(),"(1.0/(1+ TMath::Exp(-[0]*(x-[1]))))", -301, 14000);
-    m_sigmoid->SetParameters(p0, p1);
-  }else if(m_mode == 2){
+  //if(m_mode == 0){
+  //  m_htCut = htCut;
+  //}else if(m_mode == 1){
+  //  m_sigmoid = new TF1(("func"+name).c_str(),"(1.0/(1+ TMath::Exp(-[0]*(x-[1]))))", -301, 14000);
+  //  m_sigmoid->SetParameters(p0, p1);
+  //}else if(m_mode == 2){
 
-    bool debug = false;
-    
-    if(fileName=="none"){
-      m_highBinEdge.push_back(-1.0);
-      m_eff        .push_back( 1.0);
-      m_effErr     .push_back( 0.0);
-      m_mode = 1;
-      m_sigmoid = new TF1(("func"+name).c_str(),"(1.0/(1+ TMath::Exp(-[0]*(x-[1]))))", -301, 14000);
-      m_sigmoid->SetParameters(p0, p1);
-      return;
-    }
 
-    TFile* inputFile = new TFile(gSystem->ExpandPathName(("$CMSSW_BASE/src/TriggerEmulator/nTupleAnalysis/data/"+fileName).c_str()),"READ");
-    if(debug) inputFile->ls();
+  TFile* inputFile = new TFile(gSystem->ExpandPathName(("$CMSSW_BASE/src/TriggerEmulator/nTupleAnalysis/data/"+fileName).c_str()),"READ");
+  if(m_debug) inputFile->ls();
 
-    TGraphAsymmErrors* relativeEff = dynamic_cast<TGraphAsymmErrors*>(inputFile->Get(histName.c_str()));
-    assert(relativeEff && "Failed to retrieve histogram");
-    if(debug) std::cout << "relativeEff  is " << relativeEff << std::endl;
-    
-    if(debug){
-      std::cout << "Filling the bims" << std::endl;  
-      std::cout << relativeEff->GetN() << std::endl;  
-    }
-
-    assert(relativeEff->GetN() && "histogram empty");
-
-    unsigned int nBins = relativeEff->GetN();
-    for(unsigned int iBin = 0; iBin<nBins; ++iBin){
-      double eff, ht;
-
-      relativeEff->GetPoint(iBin, ht, eff);
-      //float ht_low   = relativeEff->GetErrorXlow(iBin);
-      float ht_high  = relativeEff->GetErrorXhigh(iBin);
-      float err_low  = relativeEff->GetErrorYlow(iBin);
-      float err_high = relativeEff->GetErrorYhigh(iBin);
-      float err_ave  = (err_low+err_high)/2;
-      float error_total = err_ave;
-      if(debug) std::cout << "Getting Point " << iBin << std::endl;  
-
-      //if(sf_tag){
-      //  double sf, ptSF;
-      //  m_sf_tag->GetPoint(iBin, ptSF, sf);
-      //  //float ptSF_low   = m_sf_tag->GetErrorXlow(iBin);
-      //  //float ptSF_high  = m_sf_tag->GetErrorXhigh(iBin);
-      //  float errSF_low  = m_sf_tag->GetErrorYlow(iBin);
-      //  float errSF_high = m_sf_tag->GetErrorYhigh(iBin);
-      //  float errSF_ave  = (errSF_low+errSF_high)/2;
-      //
-      //  eff *= sf;
-      //  error_total = sqrt(err_ave*err_ave + errSF_ave*errSF_ave);
-      //}
-
-      if(debug)
-	std::cout << "\tiBin " << iBin << " ht: " << ht-ht_high << " - " << ht << " - " << ht+ht_high
-		  << " eff: " << eff << " +/- " << error_total
-		  << std::endl;
-      m_highBinEdge .push_back(ht+ht_high);
-      assert((eff >= 0) && "ERROR Loading eff < 0");
-      m_eff        .push_back(eff);
-      m_effErr     .push_back(error_total);
-    }
-  
-    //if(debug) std::cout << "Closing ROOTFile" << std::endl;
-    inputFile->Close();
-    delete inputFile;
-
+  TGraphAsymmErrors* relativeEff = dynamic_cast<TGraphAsymmErrors*>(inputFile->Get(histName.c_str()));
+  if(!relativeEff){
+    inputFile->ls();
+    cout << "HLTBTagEmulator::failed to get histogram: " << histName << " from  file: " << fileName << endl;
   }
 
+  assert(relativeEff && "Failed to retrieve histogram");
+  if(m_debug) std::cout << "relativeEff  is " << relativeEff << std::endl;
+    
+  if(m_debug){
+    std::cout << "Filling the bims" << std::endl;  
+    std::cout << relativeEff->GetN() << std::endl;  
+  }
 
+  assert(relativeEff->GetN() && "histogram empty");
 
+  unsigned int nBins = relativeEff->GetN();
+  for(unsigned int iBin = 0; iBin<nBins; ++iBin){
+    double eff, ht;
+
+    relativeEff->GetPoint(iBin, ht, eff);
+    //float ht_low   = relativeEff->GetErrorXlow(iBin);
+    float ht_high  = relativeEff->GetErrorXhigh(iBin);
+    float err_low  = relativeEff->GetErrorYlow(iBin);
+    float err_high = relativeEff->GetErrorYhigh(iBin);
+    float err_ave  = (err_low+err_high)/2;
+    float error_total = err_ave;
+    if(m_debug) std::cout << "Getting Point " << iBin << std::endl;  
+
+    //if(sf_tag){
+    //  double sf, ptSF;
+    //  m_sf_tag->GetPoint(iBin, ptSF, sf);
+    //  //float ptSF_low   = m_sf_tag->GetErrorXlow(iBin);
+    //  //float ptSF_high  = m_sf_tag->GetErrorXhigh(iBin);
+    //  float errSF_low  = m_sf_tag->GetErrorYlow(iBin);
+    //  float errSF_high = m_sf_tag->GetErrorYhigh(iBin);
+    //  float errSF_ave  = (errSF_low+errSF_high)/2;
+    //
+    //  eff *= sf;
+    //  error_total = sqrt(err_ave*err_ave + errSF_ave*errSF_ave);
+    //}
+
+    if(m_debug)
+      std::cout << "\tiBin " << iBin << " ht: " << ht-ht_high << " - " << ht << " - " << ht+ht_high
+		<< " eff: " << eff << " +/- " << error_total
+		<< std::endl;
+    m_highBinEdge .push_back(ht+ht_high);
+    assert((eff >= 0) && "ERROR Loading eff < 0");
+    m_eff        .push_back(eff);
+    m_effErr     .push_back(error_total);
+  }
+  
+  if(m_debug) std::cout << "Closing ROOTFile" << std::endl;
+  inputFile->Close();
+  delete inputFile;
 
 }
 
 bool HLTHtEmulator::passHt(float ht, float seedOffset, float smearFactor){
-  if(m_mode == 0){
-    if(ht > m_htCut) {
-      return true;
-    }
-    return false;
-  }else if(m_mode == 1){
-
-    float probPassTrig = m_sigmoid->Eval(ht);
-    //float thisTagEff = eff + effErr*smearFactor;
-    //int seed = (int)(ht * seedOffset + ht); 
-    //m_rand->SetSeed(seed);
-    if(probPassTrig > m_rand->Rndm())
-      return true;
-    return false;
-  }
+//  if(m_mode == 0){
+//    if(ht > m_htCut) {
+//      return true;
+//    }
+//    return false;
+//  }else if(m_mode == 1){
+//
+//    float probPassTrig = m_sigmoid->Eval(ht);
+//    //float thisTagEff = eff + effErr*smearFactor;
+//    //int seed = (int)(ht * seedOffset + ht); 
+//    //m_rand->SetSeed(seed);
+//    if(probPassTrig > m_rand->Rndm())
+//      return true;
+//    return false;
+//  }
   
   bool debug = false;
   //if(ht > 500) debug = true;

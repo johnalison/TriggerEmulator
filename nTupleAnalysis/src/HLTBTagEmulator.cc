@@ -10,9 +10,10 @@
 using std::cout; using std::endl;
 using namespace TriggerEmulator;
 
-HLTBTagEmulator::HLTBTagEmulator(std::string tagName, std::string fileName, std::string histName, bool debug){
-  if(debug) std::cout << "HLTBTagEmulator:: creating " << tagName << " from File: " << fileName << " and histogram " << histName << std::endl;
-  name = tagName;
+HLTBTagEmulator::HLTBTagEmulator(std::string histName_, std::string fileName_, bool debug){
+  if(debug) std::cout << "HLTBTagEmulator:: from File: " << fileName_ << " and histogram " << histName_ << std::endl;
+  histName = histName_;
+  fileName = fileName_;
   m_rand = new TRandom3();
 
   if(fileName=="none"){
@@ -26,6 +27,12 @@ HLTBTagEmulator::HLTBTagEmulator(std::string tagName, std::string fileName, std:
   if(debug) inputFile->ls();
 
   TGraphAsymmErrors* relativeEff = dynamic_cast<TGraphAsymmErrors*>(inputFile->Get(histName.c_str()));
+  if(!relativeEff){
+    inputFile->ls();
+    cout << "HLTBTagEmulator::failed to get histogram: " << histName << " from  file: " << fileName << endl;
+  }
+
+
   assert(relativeEff && "Failed to retrieve histogram");
   if(debug) std::cout << "relativeEff  is " << relativeEff << std::endl;
 
@@ -96,7 +103,8 @@ bool HLTBTagEmulator::passJet(float pt, float seedOffset, float smearFactor){
     eff    = m_eff.back();
     effErr = m_effErr.back();
   }
-  assert((eff > 0) && "ERROR eff < 0");
+  if(eff < 0) eff = 0;
+  //assert((eff > 0) && "ERROR eff < 0");
   //cout << " pt_eff is " << eff << endl;
   
 

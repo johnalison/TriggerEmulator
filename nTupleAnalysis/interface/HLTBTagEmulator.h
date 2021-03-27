@@ -13,11 +13,12 @@ namespace TriggerEmulator {
       
   public:
 
-    HLTBTagEmulator(std::string tagName, std::string fileName, std::string histName, bool debug=false);
+    HLTBTagEmulator(std::string histName_, std::string fileName_, bool debug=false);
 
     bool passJet(float pt, float seedOffset = 1.0, float smearFactor = 0.0);
 
-    std::string name;
+    std::string histName;
+    std::string fileName;
 
   private:
 

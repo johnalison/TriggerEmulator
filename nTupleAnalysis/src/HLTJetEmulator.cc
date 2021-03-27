@@ -10,9 +10,11 @@
 using std::cout; using std::endl;
 using namespace TriggerEmulator;
 
-HLTJetEmulator::HLTJetEmulator(std::string tagName, std::string fileName, std::string histName, bool debug){
-  if(debug) std::cout << "HLTJetEmulator:: creating " << tagName << " from File: " << fileName << " and histogram " << histName << std::endl;
-  name = tagName;
+HLTJetEmulator::HLTJetEmulator(std::string histName_, std::string fileName_, bool debug){
+  if(debug) std::cout << "HLTJetEmulator:: creating from File: " << fileName_ << " and histogram " << histName_ << std::endl;
+
+  histName = histName_;
+  fileName = fileName_;
   m_rand = new TRandom3();
 
   if(fileName=="none"){
@@ -26,6 +28,11 @@ HLTJetEmulator::HLTJetEmulator(std::string tagName, std::string fileName, std::s
   if(debug) inputFile->ls();
   
   TGraphAsymmErrors* relativeEff = dynamic_cast<TGraphAsymmErrors*>(inputFile->Get(histName.c_str()));
+  if(!relativeEff){
+    inputFile->ls();
+    cout << "HLTBTagEmulator::failed to get histogram: " << histName << " from  file: " << fileName << endl;
+  }
+
   assert(relativeEff && "Failed to retrieve histogram");
   if(debug) std::cout << "relativeEff  is " << relativeEff << std::endl;
 
@@ -80,7 +87,7 @@ HLTJetEmulator::HLTJetEmulator(std::string tagName, std::string fileName, std::s
   if(debug) std::cout << "Closing ROOTFile" << std::endl;
   inputFile->Close();
   delete inputFile;
-  if(debug) std::cout << "Left HLTJetEmulatorx" << std::endl;
+  if(debug) std::cout << "Left HLTJetEmulator" << std::endl;
 }
 
 
@@ -91,7 +98,7 @@ bool HLTJetEmulator::passJet(float pt, float seedOffset, float smearFactor){
   float eff    = -99;
   //float sf     = -99;
   float effErr = -99;
-  //cout << " pt is " << pt << endl;
+  //cout << " pt is " << pt << " " << name << endl;
   for(unsigned int iBin = 0; iBin< m_highBinEdge.size(); ++iBin){
     if(pt < m_highBinEdge.at(iBin)){
       eff    = m_eff   .at(iBin);
@@ -99,12 +106,15 @@ bool HLTJetEmulator::passJet(float pt, float seedOffset, float smearFactor){
       break;
     }
   }
-  if(eff < 0) {
+
+  if(eff < -90) {
     eff    = m_eff.back();
     effErr = m_effErr.back();
   }
-  assert((eff > 0) && "ERROR eff < 0");
+
+  if(eff < 0) eff = 0;
   //cout << " pt_eff is " << eff << endl;
+  //assert((eff > 0) && "ERROR eff < 0");
   
 
   float thisTagEff = eff + effErr*smearFactor;
