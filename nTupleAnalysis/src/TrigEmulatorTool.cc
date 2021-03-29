@@ -273,7 +273,7 @@ void TrigEmulatorTool::config2018(){
   //
   HTConfig = {
     {hTTurnOn::L1ORAll_Ht330_4j_3b,            {{"hT30TurnOn_L1ORAll_L1UnprescaledPassNJet_Ht330_4j_3b",      fileName2018}} },
-    {hTTurnOn::L1ORAll_2b116,                  {{"hT30TurnOn_L1ORAll_L1UnprescaledPassNJet_2b116",            fileName2018}} },
+    {hTTurnOn::L1ORAll_2b116,                  {{"hT30_lTurnOn_L1ORAll_L1UnprescaledPassNJet_2b116",          fileName2018}} },
     {hTTurnOn::CaloHt320,                      {{"hT30TurnOn_CaloHt320_L1UnprescaledPassNJet_Ht330_4j_3b",    fileName2018}} },
     {hTTurnOn::PFHt330,                        {{"hT30TurnOn_PFHt330_L1UnprescaledPassNJet_Ht330_4j_3b",      fileName2018}} },
   };
