@@ -103,7 +103,8 @@ void TrigEmulatorTool::AddTrig(string trigName,  const vector<hTTurnOn>& HTNames
   vector<HLTHtEmulator*> HTCuts; 
   for(const hTTurnOn& HTName : HTNames){
     if(m_Ht.find(HTName) == m_Ht.end()){
-      cout << "TrigEmulatorTool::AddTrig ERROR Ht " << HTName << " not defined " << endl;
+      //static_cast<std::underlying_type<A>::type>(a)
+      cout << "TrigEmulatorTool::AddTrig ERROR Ht " << static_cast<std::underlying_type<hTTurnOn>::type>(HTName) << " not defined " << endl;
       assert(false);
     }  
     HTCuts.push_back(m_Ht[HTName]);
@@ -116,7 +117,7 @@ void TrigEmulatorTool::AddTrig(string trigName,  const vector<hTTurnOn>& HTNames
   vector<HLTJetEmulator*> JetPtCuts; 
   for(const jetTurnOn& jetName : JetNames){
     if(m_Jet.find(jetName) == m_Jet.end()){
-      cout << "TrigEmulatorTool::AddTrig ERROR Jet " << jetName << " not defined " << endl;
+      cout << "TrigEmulatorTool::AddTrig ERROR Jet " << static_cast<std::underlying_type<jetTurnOn>::type>(jetName) << " not defined " << endl;
       assert(false);
     }  
     JetPtCuts.push_back(m_Jet[jetName]);
@@ -128,7 +129,7 @@ void TrigEmulatorTool::AddTrig(string trigName,  const vector<hTTurnOn>& HTNames
   vector<HLTBTagEmulator*> BTagPtCuts; 
   for(const bTagTurnOn& btagName : TagNames){
     if(m_BTag.find(btagName) == m_BTag.end()){
-      cout << "TrigEmulatorTool::AddTrig ERROR BTag " << btagName << " not defined " << endl;
+      cout << "TrigEmulatorTool::AddTrig ERROR BTag " << static_cast<std::underlying_type<bTagTurnOn>::type>(btagName) << " not defined " << endl;
       assert(false);
     }  
     BTagPtCuts.push_back(m_BTag[btagName]);
@@ -231,51 +232,53 @@ void TrigEmulatorTool::config2018(){
 
   cout << "TrigEmulatorTool::configuring for 2018 " << endl;
 
-  std::string fileName2018 = "histMC_2018_All_fittedTurnOns.root";
+  std::string fileName2018 = "haddOutput_All_MC2018_4Sep_fittedTurnOns.root";
 
   //
   //  Jet Emulator
   //
   JetConfig = {
-    {jetTurnOn::PF30,                   {{"pt_PF30_TurnOn",                     fileName2018}} },
-    {jetTurnOn::PF40,                   {{"pt_PF40_TurnOn",                     fileName2018}} },
-    {jetTurnOn::PF45,                   {{"pt_PF45_TurnOn",                     fileName2018}} },
-    {jetTurnOn::PF60,                   {{"pt_PF60_TurnOn",                     fileName2018}} },
-    {jetTurnOn::PF75,                   {{"pt_PF75_TurnOn"        ,             fileName2018}} },
-    {jetTurnOn::L1112,                  {{"pt_2b116_L1ORAll_TurnOn",            fileName2018}} },
-    {jetTurnOn::Calo100,                {{"pt_Calo100_TurnOn"     ,             fileName2018}} },   
-    {jetTurnOn::PF116,                  {{"pt_PFJets116_TurnOn"   ,             fileName2018}} },   
-    {jetTurnOn::PF116Dr,                {{"pt_PFJets116Dr_TurnOn" ,             fileName2018}} },
-    {jetTurnOn::L1112TandP,             {{"pt_L1112TandP_TurnOn",               fileName2018}} },
-    {jetTurnOn::L1112TandPDenMatch,     {{"pt_L1112TandPDenMatch_TurnOn",       fileName2018}} },
-    {jetTurnOn::Calo100DenMatch,        {{"pt_Calo100DenMatch_TurnOn"     ,     fileName2018}} },   
-    {jetTurnOn::PF116DenMatch,          {{"pt_PFJets116DenMatch_TurnOn"   ,     fileName2018}} },   
-    {jetTurnOn::PF116DrDenMatch,        {{"pt_PFJets116DrDenMatch_TurnOn" ,     fileName2018}} },
-    {jetTurnOn::PF30DenMatch,           {{"pt_PF30DenMatch_TurnOn",             fileName2018}} },
-    {jetTurnOn::PF40DenMatch,           {{"pt_PF40DenMatch_TurnOn",             fileName2018}} },
-    {jetTurnOn::PF45DenMatch,           {{"pt_PF45DenMatch_TurnOn",             fileName2018}} },
-    {jetTurnOn::PF60DenMatch,           {{"pt_PF60DenMatch_TurnOn",             fileName2018}} },
-    {jetTurnOn::PF75DenMatch,           {{"pt_PF75DenMatch_TurnOn",             fileName2018}} },
+    {jetTurnOn::PF30BTag,                   {{"pt_s_PF30inMJMatchBtagTandP_jetID_TurnOn",                     fileName2018}} },
+    {jetTurnOn::PF40BTag,                   {{"pt_s_PF40inMJMatchBtagTandP_jetID_TurnOn",                     fileName2018}} },
+    {jetTurnOn::PF45BTag,                   {{"pt_s_PF45inMJMatchBtagTandP_jetID_TurnOn",                     fileName2018}} },
+    {jetTurnOn::PF60BTag,                   {{"pt_PF60inMJMatchBtagTandP_jetID_TurnOn",                     fileName2018}} },
+    {jetTurnOn::PF75BTag,                   {{"pt_PF75inMJMatchBtagTandP_jetID_TurnOn",                     fileName2018}} },
+    {jetTurnOn::PF116BTag,                      {{"pt_PF116inMJMatchBtagTandP_jetID_TurnOn",                     fileName2018}} },
+
+    {jetTurnOn::L1112BTag,   {{"pt_L12b112inMJMatchBtagTandP_jetID_TurnOn", fileName2018}} },
+    {jetTurnOn::Calo100BTag, {{"pt_Calo100inMJMatchBtagTandP_jetID_TurnOn", fileName2018}} },
+
+
+    {jetTurnOn::PF30,                   {{"pt_s_PF30inMJTandP_jetID_TurnOn",                     fileName2018}} },
+    {jetTurnOn::PF40,                   {{"pt_s_PF40inMJTandP_jetID_TurnOn",                     fileName2018}} },
+    {jetTurnOn::PF45,                   {{"pt_s_PF45inMJTandP_jetID_TurnOn",                     fileName2018}} },
+    {jetTurnOn::PF60,                   {{"pt_PF60inMJTandP_jetID_TurnOn",                     fileName2018}} },
+    {jetTurnOn::PF75,                   {{"pt_PF75inMJTandP_jetID_TurnOn",                     fileName2018}} },
+    {jetTurnOn::PF116,                  {{"pt_PF116inMJTandP_jetID_TurnOn",                     fileName2018}} },
+
+    {jetTurnOn::L1112,   {{"pt_L12b112inMJTandP_jetID_TurnOn", fileName2018}} },
+    {jetTurnOn::Calo100, {{"pt_Calo100inMJTandP_jetID_TurnOn", fileName2018}} },
+
+
   };
 
   //
   //  BTag Emulator
   //
   BTagConfig = {
-    {bTagTurnOn::PFDeepCSVMatchBtag,                 {{"pt_PFDeepCSVMatchBtag_TurnOn",               fileName2018}} },
-    {bTagTurnOn::CaloDeepCSV0p7MatchBtag,            {{"pt_CaloDeepCSV0p7MatchBtag_TurnOn",          fileName2018}} },
-    {bTagTurnOn::PFDeepCSVMatchBtagDenMatch,         {{"pt_PFDeepCSVMatchBtagDenMatch_TurnOn",       fileName2018}} },
-    {bTagTurnOn::CaloDeepCSV0p7MatchBtagDenMatch,    {{"pt_CaloDeepCSV0p7MatchBtagDenMatch_TurnOn",  fileName2018}} },
+    {bTagTurnOn::PFDeepCSV,                 {{"pt_PFDeepCSVinMJMatchBtagTandP_jetID_TurnOn",               fileName2018}} },
+    {bTagTurnOn::CaloDeepCSV,               {{"pt_CaloDeepCSVinMJMatchBtagTandP_jetID_TurnOn",             fileName2018}} },
+    {bTagTurnOn::CaloDeepCSV2b116,          {{"pt_CaloDeepCSVinMJ2b116MatchBtagTandP_jetID_TurnOn",        fileName2018}} },
+    {bTagTurnOn::Calo100BTag,               {{"pt_Calo100inMJMatchBtagTandP_jetID_TurnOn",                 fileName2018}} },
   };
 
   //
   // Ht Config
   //
   HTConfig = {
-    {hTTurnOn::L1ORAll_Ht330_4j_3b,            {{"hT30TurnOn_L1ORAll_L1UnprescaledPassNJet_Ht330_4j_3b",      fileName2018}} },
-    {hTTurnOn::L1ORAll_2b116,                  {{"hT30_lTurnOn_L1ORAll_L1UnprescaledPassNJet_2b116",          fileName2018}} },
-    {hTTurnOn::CaloHt320,                      {{"hT30TurnOn_CaloHt320_L1UnprescaledPassNJet_Ht330_4j_3b",    fileName2018}} },
-    {hTTurnOn::PFHt330,                        {{"hT30TurnOn_PFHt330_L1UnprescaledPassNJet_Ht330_4j_3b",      fileName2018}} },
+    {hTTurnOn::L1ORAll_Ht330_4j_3b,            {{"hT30_L1ORAll_TurnOn",      fileName2018}} },
+    {hTTurnOn::CaloHt320,                      {{"hT30_CaloHt320_TurnOn",    fileName2018}} },
+    {hTTurnOn::PFHt330,                        {{"hT30_PFHt330_TurnOn",      fileName2018}} },
   };
 
 
@@ -285,22 +288,27 @@ void TrigEmulatorTool::config2018(){
 void TrigEmulatorTool::config2017(){
 
   cout << "TrigEmulatorTool::configuring for 2017 " << endl;
-  std::string fileName2017 = "histMC_2017_All_fittedTurnOns.root";
+  std::string fileName2017 = "haddOutput_All_MC2017_4Sep_fittedTurnOns.root";
 
   //
   //  Jet Emulator
   //
   JetConfig = {
-    {jetTurnOn::L1100TandP,              {{"pt_L1100TandP_TurnOn",              fileName2017}} },
-    {jetTurnOn::L1100TandPDenMatch,      {{"pt_L1100TandPDenMatch_TurnOn",      fileName2017}} }, 
-    {jetTurnOn::Calo100DenMatch,         {{"pt_Calo100DenMatch_TurnOn"     ,    fileName2017}} },   
-    {jetTurnOn::PF100DenMatch,           {{"pt_PFJets100DenMatch_TurnOn"   ,    fileName2017}} },   
-    {jetTurnOn::PF100DrDenMatch,         {{"pt_PFJets100DrDenMatch_TurnOn" ,    fileName2017}} },
-    {jetTurnOn::PF30DenMatch,            {{"pt_PF30DenMatch_TurnOn",            fileName2017}} },
-    {jetTurnOn::PF40DenMatch,            {{"pt_PF40DenMatch_TurnOn",            fileName2017}} },
-    {jetTurnOn::PF45DenMatch,            {{"pt_PF45DenMatch_TurnOn",            fileName2017}} },
-    {jetTurnOn::PF60DenMatch,            {{"pt_PF60DenMatch_TurnOn",            fileName2017}} },
-    {jetTurnOn::PF75DenMatch,            {{"pt_PF75DenMatch_TurnOn",            fileName2017}} },
+    {jetTurnOn::PF30BTag,                   {{"pt_s_PF30inMJMatchBtagTandP_jetID_TurnOn",                     fileName2017}} },
+    {jetTurnOn::PF40BTag,                   {{"pt_s_PF40inMJMatchBtagTandP_jetID_TurnOn",                     fileName2017}} },
+    {jetTurnOn::PF45BTag,                   {{"pt_s_PF45inMJMatchBtagTandP_jetID_TurnOn",                     fileName2017}} },
+    {jetTurnOn::PF60BTag,                   {{"pt_PF60inMJMatchBtagTandP_jetID_TurnOn",                      fileName2017}} },
+    {jetTurnOn::PF75BTag,                   {{"pt_PF75inMJMatchBtagTandP_jetID_TurnOn",                      fileName2017}} },
+    {jetTurnOn::PF100BTag,                  {{"pt_PF100inMJMatchBtagTandP_jetID_TurnOn",                     fileName2017}} },
+
+    {jetTurnOn::L1100BTag,   {{"pt_L12b100inMJMatchBtagTandP_jetID_TurnOn", fileName2017}} },
+    {jetTurnOn::Calo100BTag, {{"pt_Calo100inMJMatchBtagTandP_jetID_TurnOn", fileName2017}} },
+
+    {jetTurnOn::PF30,                   {{"pt_s_PF30inMJTandP_jetID_TurnOn",                     fileName2017}} },
+    {jetTurnOn::PF40,                   {{"pt_s_PF40inMJTandP_jetID_TurnOn",                     fileName2017}} },
+    {jetTurnOn::PF45,                   {{"pt_s_PF45inMJTandP_jetID_TurnOn",                     fileName2017}} },
+    {jetTurnOn::PF60,                   {{"pt_PF60inMJTandP_jetID_TurnOn",                       fileName2017}} },
+    {jetTurnOn::PF75,                   {{"pt_PF75inMJTandP_jetID_TurnOn",                       fileName2017}} },
   };
 
 
@@ -308,20 +316,19 @@ void TrigEmulatorTool::config2017(){
   //  BTag Emulator
   //
   BTagConfig = {
-    {bTagTurnOn::PFDeepCSVMatchBtag,                 {{"pt_PFDeepCSVMatchBtag_TurnOn",              fileName2017}} },
-    {bTagTurnOn::CaloDeepCSV0p7MatchBtag,            {{"pt_CaloDeepCSV0p7MatchBtag_TurnOn",         fileName2017}} },
-    {bTagTurnOn::PFDeepCSVMatchBtagDenMatch,         {{"pt_PFDeepCSVMatchBtagDenMatch_TurnOn",      fileName2017}} },
-    {bTagTurnOn::CaloDeepCSV0p7MatchBtagDenMatch,    {{"pt_CaloDeepCSV0p7MatchBtagDenMatch_TurnOn", fileName2017}} },
+    {bTagTurnOn::PFCSV,                 {{"pt_PFCSVinMJMatchBtagTandP_jetID_TurnOn",               fileName2017}} },
+    {bTagTurnOn::CaloCSV,               {{"pt_CaloCSVinMJMatchBtagTandP_jetID_TurnOn",             fileName2017}} },
+    {bTagTurnOn::CaloCSV2b100,          {{"pt_CaloCSVinMJ2b100MatchBtagTandP_jetID_TurnOn",        fileName2017}} },
+    {bTagTurnOn::Calo100BTag,           {{"pt_Calo100inMJMatchBtagTandP_jetID_TurnOn",             fileName2017}} },
   };
 
   //
   // Ht Config
   //
   HTConfig = {
-    {hTTurnOn::L1ORAll_Ht300_4j_3b,       {{"hT30TurnOn_L1ORAll_L1UnprescaledPassNJet_Ht300_4j_3b",      fileName2017}} },
-    {hTTurnOn::L1ORAll_2b100,             {{"hT30_lTurnOn_L1ORAll_L1UnprescaledPassNJet_2b100",          fileName2017}} },
-    {hTTurnOn::CaloHt300,                 {{"hT30TurnOn_CaloHt300_L1UnprescaledPassNJet_Ht300_4j_3b",    fileName2017}} },
-    {hTTurnOn::PFHt300,                   {{"hT30TurnOn_PFHt300_L1UnprescaledPassNJet_Ht300_4j_3b",      fileName2017}} },
+    {hTTurnOn::L1ORAll_Ht300_4j_3b,       {{"hT30_L1ORAll_TurnOn",      fileName2017}} },
+    {hTTurnOn::CaloHt300,                 {{"hT30_CaloHt300_TurnOn",    fileName2017}} },
+    {hTTurnOn::PFHt300,                   {{"hT30_PFHt300_TurnOn",      fileName2017}} },
   };
 
 }
@@ -331,42 +338,40 @@ void TrigEmulatorTool::config2017(){
 void TrigEmulatorTool::config2016(){
 
   cout << "TrigEmulatorTool::configuring for 2016 " << endl;
-  std::string fileName2016 = "histMC_2016_All_fittedTurnOns.root";
+  std::string fileName2016 = "haddOutput_All_MC2016_4Sep_fittedTurnOns.root";
 
   //
   //  Jet Emulator
   //
   JetConfig = {
-    {jetTurnOn::L1100TandP,            {{"pt_L1100TandP_TurnOn",              fileName2016}} },
-    {jetTurnOn::L1100TandPDenMatch,    {{"pt_L1100TandPDenMatch_TurnOn",      fileName2016}} },
-    {jetTurnOn::Calo30,                {{"pt_Calo30_TurnOn"     ,             fileName2016}} },
-    {jetTurnOn::Calo45,                {{"pt_Calo45_TurnOn"     ,             fileName2016}} },
-    {jetTurnOn::Calo90DenMatch,        {{"pt_Calo90DenMatch_TurnOn"     ,     fileName2016}} },   
-    {jetTurnOn::Calo100DenMatch,       {{"pt_Calo100DenMatch_TurnOn"     ,    fileName2016}} },   
-    {jetTurnOn::PF30DenMatch,          {{"pt_PF30DenMatch_TurnOn",            fileName2016}} },
-    {jetTurnOn::PF45DenMatch,          {{"pt_PF45DenMatch_TurnOn",            fileName2016}} },
-    {jetTurnOn::PF90DenMatch,          {{"pt_PF90DenMatch_TurnOn"   ,         fileName2016}} },   
-    {jetTurnOn::PF100DenMatch,         {{"pt_PFJets100DenMatch_TurnOn"   ,    fileName2016}} },   
-    {jetTurnOn::PF100DrDenMatch,       {{"pt_PFJets100DrDenMatch_TurnOn" ,    fileName2016}} },
+    {jetTurnOn::Calo30BTag, {{"pt_Calo30inMJMatchBtagTandP_jetID_TurnOn", fileName2016}} },
+    {jetTurnOn::Calo45BTag, {{"pt_Calo45inMJMatchBtagTandP_jetID_TurnOn", fileName2016}} },
+    {jetTurnOn::Calo90BTag, {{"pt_Calo90inMJMatchBtagTandP_jetID_TurnOn", fileName2016}} },
+    {jetTurnOn::Calo100BTag, {{"pt_Calo100inMJMatchBtagTandP_jetID_TurnOn", fileName2016}} },
+
+    {jetTurnOn::PF30BTag,   {{"pt_PF30inMJMatchBtagTandP_jetID_TurnOn",                     fileName2016}} },
+    {jetTurnOn::PF45BTag,   {{"pt_PF45inMJMatchBtagTandP_jetID_TurnOn",                     fileName2016}} },
+    {jetTurnOn::PF90BTag,   {{"pt_PF90inMJMatchBtagTandP_jetID_TurnOn",                       fileName2016}} },
+    {jetTurnOn::PF100BTag,  {{"pt_PF100inMJMatchBtagTandP_jetID_TurnOn",                       fileName2016}} },
+
+    {jetTurnOn::L1100BTag,   {{"pt_L12b100inMJMatchBtagTandP_jetID_TurnOn", fileName2016}} },
   };
 
   //
   //  BTag Emulator
   //
   BTagConfig = {
-    {bTagTurnOn::CaloCSVMatchBtag,             {{"pt_CaloCSVMatchBtag_TurnOn",             fileName2016}} },
-    {bTagTurnOn::CaloCSVMatchBtagDenMatch,     {{"pt_CaloCSVMatchBtagDenMatch_TurnOn",     fileName2016}} },
-    {bTagTurnOn::CaloCSV0p84MatchBtag,         {{"pt_CaloCSV0p84MatchBtag_TurnOn",         fileName2016}} },
-    {bTagTurnOn::CaloCSV0p84MatchBtagDenMatch, {{"pt_CaloCSV0p84MatchBtagDenMatch_TurnOn", fileName2016}} },
+    {bTagTurnOn::CaloCSV,               {{"pt_CaloCSVinMJMatchBtagTandP_jetID_TurnOn",             fileName2016}} },
+    {bTagTurnOn::CaloCSV2b100,          {{"pt_CaloCSVinMJ2b100MatchBtagTandP_jetID_TurnOn",        fileName2016}} },
+    {bTagTurnOn::Calo100BTag,           {{"pt_Calo100inMJMatchBtagTandP_jetID_TurnOn", fileName2016}} },
   };
 
   //
   // HT Config
   //
   HTConfig = {
-    {hTTurnOn::L1ORAll_4j_3b,            {{"hT30TurnOn_L1ORAll_L1UnprescaledPassNJet_4j_3b",      fileName2016}} },
-    {hTTurnOn::L1ORAll_2b100,            {{"hT30_lTurnOn_L1ORAll_L1UnprescaledPassNJet_2b100",      fileName2016}} },
-    {hTTurnOn::L1ORAll_2j_2j_3b,         {{"hT30TurnOn_L1ORAll_L1UnprescaledPassNJet_2j_2j_3b",      fileName2016}} },
+    {hTTurnOn::L1ORAll_4j_3b,       {{"hT30_L1ORAll_TurnOn",      fileName2016}} },
+    {hTTurnOn::L1ORAll_2j_2j_3b,    {{"hT30_L1ORAll_2j_2j_3b_TurnOn",      fileName2016}} },
   };
 
 

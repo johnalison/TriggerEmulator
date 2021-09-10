@@ -12,7 +12,7 @@
 
 namespace TriggerEmulator {
 
-  enum hTTurnOn { 
+  enum class hTTurnOn { 
     L1ORAll_4j_3b,   
     L1ORAll_Ht300_4j_3b, 
     L1ORAll_Ht330_4j_3b,
@@ -29,7 +29,7 @@ namespace TriggerEmulator {
     PFHt330,            
   };
 
-  enum jetTurnOn { 
+  enum class jetTurnOn { 
     L1100TandP,         
     L1100TandPDenMatch, 
     L1112,              
@@ -62,9 +62,24 @@ namespace TriggerEmulator {
     PF116DenMatch,      
     PF116DrDenMatch,    
 
+    Calo45BTag,             
+    Calo30BTag,             
+    PF30BTag,
+    PF40BTag,
+    PF45BTag,
+    PF60BTag,
+    PF75BTag,
+    L1112BTag,   
+    Calo100BTag, 
+    PF116BTag,   
+    L1100BTag,   
+    PF100BTag,   
+    PF90BTag,   
+    Calo90BTag,             
+
   };
 
-  enum bTagTurnOn { 
+  enum class bTagTurnOn { 
     CaloCSVMatchBtag,             
     CaloCSVMatchBtagDenMatch,     
     CaloCSV0p84MatchBtag,         
@@ -74,6 +89,15 @@ namespace TriggerEmulator {
     CaloDeepCSV0p7MatchBtag,         
     PFDeepCSVMatchBtagDenMatch,      
     CaloDeepCSV0p7MatchBtagDenMatch, 
+
+    PFDeepCSV,
+    CaloDeepCSV,
+    CaloDeepCSV2b116,
+    PFCSV,
+    CaloCSV,
+      CaloCSV2b100,
+
+      Calo100BTag,
   };
 
   //
