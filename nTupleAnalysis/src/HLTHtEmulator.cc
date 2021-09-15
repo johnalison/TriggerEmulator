@@ -87,25 +87,20 @@ HLTHtEmulator::HLTHtEmulator(std::string histName_, std::string fileName_, bool 
 
 }
 
+
+
 bool HLTHtEmulator::passHt(float ht, float seedOffset, float smearFactor){
-//  if(m_mode == 0){
-//    if(ht > m_htCut) {
-//      return true;
-//    }
-//    return false;
-//  }else if(m_mode == 1){
-//
-//    float probPassTrig = m_sigmoid->Eval(ht);
-//    //float thisTagEff = eff + effErr*smearFactor;
-//    //int seed = (int)(ht * seedOffset + ht); 
-//    //m_rand->SetSeed(seed);
-//    if(probPassTrig > m_rand->Rndm())
-//      return true;
-//    return false;
-//  }
-  
+
+  //int seed = (int)(pt * seedOffset + pt); 
+  //m_rand->SetSeed(seed);
+  double htRand = m_rand->Rndm();
+
+  return passHtThreshold(ht, htRand, smearFactor);
+}
+
+
+bool HLTHtEmulator::passHtThreshold(float ht, double htRand, float smearFactor){  
   bool debug = false;
-  //if(ht > 500) debug = true;
 
   //
   // => (m_mode == 2)
@@ -133,9 +128,7 @@ bool HLTHtEmulator::passHt(float ht, float seedOffset, float smearFactor){
 
   float thisTagEff = eff + effErr*smearFactor;
   if(debug) cout << " thisTagEff  " <<  thisTagEff << " for ht = " << ht << endl;
-  //int seed = (int)(pt * seedOffset + pt); 
-  //m_rand->SetSeed(seed);
-  if(thisTagEff > m_rand->Rndm())
+  if(thisTagEff > htRand)
     return true;
 
   return false;

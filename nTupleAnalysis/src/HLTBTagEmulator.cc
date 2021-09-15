@@ -87,6 +87,15 @@ HLTBTagEmulator::HLTBTagEmulator(std::string histName_, std::string fileName_, b
 
 bool HLTBTagEmulator::passJet(float pt, float seedOffset, float smearFactor){
 
+  //int seed = (int)(pt * seedOffset + pt); 
+  //m_rand->SetSeed(seed);
+  double bTagRand = m_rand->Rndm();
+  return passJetThreshold(pt, bTagRand, smearFactor);
+}
+
+
+bool HLTBTagEmulator::passJetThreshold(float pt, double bTagRand, float smearFactor){
+
   //thisTagEff = tagEff->Eval(pt)*scaleFactor;
   float eff    = -99;
   //float sf     = -99;
@@ -109,10 +118,10 @@ bool HLTBTagEmulator::passJet(float pt, float seedOffset, float smearFactor){
   
 
   float thisTagEff = eff + effErr*smearFactor;
-  int seed = (int)(pt * seedOffset + pt); 
-  //m_rand->SetSeed(seed);
-  if(thisTagEff > m_rand->Rndm())
+  if(thisTagEff > bTagRand)
     return true;
 
   return false;
 }
+
+

@@ -27,6 +27,12 @@ namespace TriggerEmulator {
     //
     bool passTrig(const std::vector<float>& offline_jet_pts, const std::vector<float>& offline_btagged_jet_pts, const float ht=-1, float seedOffset=1.0);
 
+    // Used for calculating correlated decisions with input (ht and btagging) weights
+    bool passTrig(const std::vector<float>& offline_jet_pts, const std::vector<float>& offline_btagged_jet_pts, const float ht, 
+		  const std::vector<std::vector<double> >& btag_rand, const std::vector<double> & ht_rand, float seedOffset=1.0);
+		
+
+
     //
     //  Calculate weight for trigger, average nPass over nToys (involves random numbers if mode == 1)
     //

@@ -16,6 +16,7 @@ namespace TriggerEmulator {
     HLTBTagEmulator(std::string histName_, std::string fileName_, bool debug=false);
 
     bool passJet(float pt, float seedOffset = 1.0, float smearFactor = 0.0);
+    bool passJetThreshold(float pt, double bTagRand, float smearFactor = 0.0);
 
     std::string histName;
     std::string fileName;
@@ -28,6 +29,7 @@ namespace TriggerEmulator {
     std::vector<double> m_highBinEdge;
     std::vector<double> m_eff;
     std::vector<double> m_effErr;
+
   };
 
 }

@@ -17,6 +17,7 @@ namespace TriggerEmulator {
     HLTHtEmulator(std::string histName_, std::string fileName_, bool debug=false );
 
     bool passHt(float ht, float seedOffset=1.0, float smearFactor = 0.0);
+    bool passHtThreshold(float ht, double htRand, float smearFactor = 0.0);
 
     std::string histName;
     std::string fileName;

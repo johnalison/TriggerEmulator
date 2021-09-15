@@ -3,6 +3,7 @@
 #include <iostream>
 #include <assert.h>
 #include <array>
+#include <TRandom3.h>
 
 using namespace TriggerEmulator;
 
@@ -11,6 +12,7 @@ using std::vector;  using std::string; using std::array;
 
 TrigEmulatorTool::TrigEmulatorTool(string name, int mode, unsigned int nToys, string year, bool debug) :  m_name(name),  m_nToys(nToys), m_debug(debug)
 {
+  m_rand = new TRandom3();
 
   if(year == "2018"){
     config2018();
@@ -96,6 +98,8 @@ void TrigEmulatorTool::AddTrig(string trigName,  const vector<hTTurnOn>& HTNames
   if(m_debug) cout << "TrigEmulatorTool::AddTrig ADding trig " << trigName << endl;
   assert(JetNames.size() == JetMults.size());
   assert(TagNames.size() == TagMults.size());
+  assert(TagNames.size() < 3 );
+    
 
   //
   // Config The Ht
@@ -181,7 +185,7 @@ float TrigEmulatorTool::GetWeight(string trigName){
   return m_emulatedWeights[trigName];
 }
 
-float TrigEmulatorTool::GetWeightOR(const vector<float>& offline_jet_pts, const vector<float>& offline_btagged_jet_pts, float ht){
+float TrigEmulatorTool::GetWeightOR(const vector<float>& offline_jet_pts, const vector<float>& offline_btagged_jet_pts, float ht, bool setSeed){
   
   unsigned int nPass  = 0;
 
@@ -189,12 +193,32 @@ float TrigEmulatorTool::GetWeightOR(const vector<float>& offline_jet_pts, const 
     
     bool passAny = false;
 
+    //
+    // jet pt weights can be uncorrelated among triggers
+    //   
+
+    // 
+    //  b-tag weights should be correlated (separate numbers for Calo and PF btagging)
+    // 
+    vector<vector<double> > btag_weights = getRandWeights(offline_btagged_jet_pts, setSeed, 2*iToy);
+
+    //
+    //  The L1 ht should be correlated among triggers 
+    //
+    if(setSeed){
+      int seed = (int)(ht * (3*iToy) + ht);
+      m_rand->SetSeed(seed);
+    }
+    // L1 HT / Calo Ht / PF Ht
+    vector<double> ht_weights = {m_rand->Rndm(), m_rand->Rndm(), m_rand->Rndm()};
+
+
     for (auto trigIt=m_emulatedTrigMenu.begin(); trigIt!=m_emulatedTrigMenu.end(); ++trigIt){
 
       // 
       // Count all events
       //
-      if(trigIt->second->passTrig(offline_jet_pts, offline_btagged_jet_pts, ht, iToy))
+      if(trigIt->second->passTrig(offline_jet_pts, offline_btagged_jet_pts, ht, btag_weights, ht_weights,  iToy))
 	passAny = true;
 	
     }
@@ -376,6 +400,23 @@ void TrigEmulatorTool::config2016(){
 
 
 
+}
+
+std::vector<std::vector<double> >  TrigEmulatorTool::getRandWeights(const std::vector<float>& input, bool setSeed, int seedOffset){
+  if(setSeed && input.size()){
+    int seed = (int)(input.at(0) * seedOffset + input.at(0));
+    m_rand->SetSeed(seed);
+  }
+  
+  vector<vector<double> > randNumbers;
+  for(unsigned int i=0; i < input.size(); ++i){
+    randNumbers.push_back(vector<double>());
+
+    randNumbers.back().push_back(m_rand->Rndm());// Calo 
+    randNumbers.back().push_back(m_rand->Rndm());// PF
+  }
+
+  return  randNumbers;
 }
 
 

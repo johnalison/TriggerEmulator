@@ -9,6 +9,7 @@
 #include <string>
 #include <map>
 
+class TRandom3;
 
 namespace TriggerEmulator {
 
@@ -150,7 +151,7 @@ namespace TriggerEmulator {
     //
     //  Calculate the weight of the OR of the menu defined
     //
-    float  GetWeightOR(const std::vector<float>& offline_jet_pts, const std::vector<float>& offline_btagged_jet_pts, float ht=-1);
+    float  GetWeightOR(const std::vector<float>& offline_jet_pts, const std::vector<float>& offline_btagged_jet_pts, float ht=-1, bool setSeed=false);
 
     // 
     //  For doing global run counting (Eg: in rate prediction)
@@ -172,6 +173,7 @@ namespace TriggerEmulator {
     unsigned int m_nToys;
     
     bool m_debug;
+    TRandom3*           m_rand        = nullptr;
 
     std::map<hTTurnOn,   std::array<std::string, 2> >  HTConfig;
     std::map<jetTurnOn,  std::array<std::string, 2> >  JetConfig;
@@ -180,6 +182,8 @@ namespace TriggerEmulator {
     void config2018();
     void config2017();
     void config2016();
+
+    std::vector<std::vector<double> >  getRandWeights(const std::vector<float>& input, bool setSeed, int seedOffset);
 
   };
 
