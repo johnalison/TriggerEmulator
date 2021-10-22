@@ -77,7 +77,8 @@ namespace TriggerEmulator {
     PF100BTag,   
     PF90BTag,   
     Calo90BTag,             
-
+    PF116DrBTag,            
+    PF100DrBTag,            
   };
 
   enum class bTagTurnOn { 

@@ -256,7 +256,7 @@ void TrigEmulatorTool::config2018(){
 
   cout << "TrigEmulatorTool::configuring for 2018 " << endl;
 
-  std::string fileName2018 = "haddOutput_All_MC2018_4Sep_fittedTurnOns.root";
+  std::string fileName2018 = "haddOutput_All_MC2018_16Sep_fittedTurnOns.root";
 
   //
   //  Jet Emulator
@@ -265,9 +265,10 @@ void TrigEmulatorTool::config2018(){
     {jetTurnOn::PF30BTag,                   {{"pt_s_PF30inMJMatchBtagTandP_jetID_TurnOn",                     fileName2018}} },
     {jetTurnOn::PF40BTag,                   {{"pt_s_PF40inMJMatchBtagTandP_jetID_TurnOn",                     fileName2018}} },
     {jetTurnOn::PF45BTag,                   {{"pt_s_PF45inMJMatchBtagTandP_jetID_TurnOn",                     fileName2018}} },
-    {jetTurnOn::PF60BTag,                   {{"pt_PF60inMJMatchBtagTandP_jetID_TurnOn",                     fileName2018}} },
-    {jetTurnOn::PF75BTag,                   {{"pt_PF75inMJMatchBtagTandP_jetID_TurnOn",                     fileName2018}} },
-    {jetTurnOn::PF116BTag,                      {{"pt_PF116inMJMatchBtagTandP_jetID_TurnOn",                     fileName2018}} },
+    {jetTurnOn::PF60BTag,                   {{"pt_PF60inMJMatchBtagTandP_jetID_TurnOn",                       fileName2018}} },
+    {jetTurnOn::PF75BTag,                   {{"pt_PF75inMJMatchBtagTandP_jetID_TurnOn",                       fileName2018}} },
+    {jetTurnOn::PF116BTag,                  {{"pt_PF116inMJMatchBtagTandP_jetID_TurnOn",                      fileName2018}} },
+    {jetTurnOn::PF116DrBTag,                {{"pt_PF116DrfilterMatchBtagTandP_jetID_TurnOn",                    fileName2018}} },
 
     {jetTurnOn::L1112BTag,   {{"pt_L12b112inMJMatchBtagTandP_jetID_TurnOn", fileName2018}} },
     {jetTurnOn::Calo100BTag, {{"pt_Calo100inMJMatchBtagTandP_jetID_TurnOn", fileName2018}} },
@@ -293,14 +294,17 @@ void TrigEmulatorTool::config2018(){
     {bTagTurnOn::PFDeepCSV,                 {{"pt_PFDeepCSVinMJMatchBtagTandP_jetID_TurnOn",               fileName2018}} },
     {bTagTurnOn::CaloDeepCSV,               {{"pt_CaloDeepCSVinMJMatchBtagTandP_jetID_TurnOn",             fileName2018}} },
     {bTagTurnOn::CaloDeepCSV2b116,          {{"pt_CaloDeepCSVinMJ2b116MatchBtagTandP_jetID_TurnOn",        fileName2018}} },
-    {bTagTurnOn::Calo100BTag,               {{"pt_Calo100inMJMatchBtagTandP_jetID_TurnOn",                 fileName2018}} },
+    //{bTagTurnOn::Calo100BTag,               {{"pt_Calo100inMJMatchBtagTandP_jetID_TurnOn",                 fileName2018}} },
+    {bTagTurnOn::Calo100BTag,           {{"pt_Calo100ANDCaloCSVDeepinMJMatchBtagTandP_jetID_TurnOn",             fileName2018}} },
   };
 
   //
   // Ht Config
   //
   HTConfig = {
-    {hTTurnOn::L1ORAll_Ht330_4j_3b,            {{"hT30_L1ORAll_TurnOn",      fileName2018}} },
+    //{hTTurnOn::L1ORAll_Ht330_4j_3b,            {{"hT30_L1ORAll_TurnOn",      fileName2018}} },
+    {hTTurnOn::L1ORAll_Ht330_4j_3b,       {{"hT30_L1ORAll_TurnOn_4Jet2Tag", fileName2018}} },
+    //{hTTurnOn::L1ORAll_Ht330_4j_3b,            {{"hT30_L1ORAll_TurnOn_2Tag",      fileName2018}} },
     {hTTurnOn::CaloHt320,                      {{"hT30_CaloHt320_TurnOn",    fileName2018}} },
     {hTTurnOn::PFHt330,                        {{"hT30_PFHt330_TurnOn",      fileName2018}} },
   };
@@ -312,7 +316,7 @@ void TrigEmulatorTool::config2018(){
 void TrigEmulatorTool::config2017(){
 
   cout << "TrigEmulatorTool::configuring for 2017 " << endl;
-  std::string fileName2017 = "haddOutput_All_MC2017_4Sep_fittedTurnOns.root";
+  std::string fileName2017 = "haddOutput_All_MC2017_16Sep_fittedTurnOns.root";
 
   //
   //  Jet Emulator
@@ -324,8 +328,9 @@ void TrigEmulatorTool::config2017(){
     {jetTurnOn::PF60BTag,                   {{"pt_PF60inMJMatchBtagTandP_jetID_TurnOn",                      fileName2017}} },
     {jetTurnOn::PF75BTag,                   {{"pt_PF75inMJMatchBtagTandP_jetID_TurnOn",                      fileName2017}} },
     {jetTurnOn::PF100BTag,                  {{"pt_PF100inMJMatchBtagTandP_jetID_TurnOn",                     fileName2017}} },
+    {jetTurnOn::PF100DrBTag,                {{"pt_PF100DrfilterMatchBtagTandP_jetID_TurnOn",                  fileName2017}} },
 
-    {jetTurnOn::L1100BTag,   {{"pt_L12b100inMJMatchBtagTandP_jetID_TurnOn", fileName2017}} },
+    {jetTurnOn::L1100BTag,   {{"pt_L12b100inMJTandP_jetID_TurnOn", fileName2017}} },
     {jetTurnOn::Calo100BTag, {{"pt_Calo100inMJMatchBtagTandP_jetID_TurnOn", fileName2017}} },
 
     {jetTurnOn::PF30,                   {{"pt_s_PF30inMJTandP_jetID_TurnOn",                     fileName2017}} },
@@ -340,17 +345,20 @@ void TrigEmulatorTool::config2017(){
   //  BTag Emulator
   //
   BTagConfig = {
-    {bTagTurnOn::PFCSV,                 {{"pt_PFCSVinMJMatchBtagTandP_jetID_TurnOn",               fileName2017}} },
+    //{bTagTurnOn::PFCSV,                 {{"pt_PFCSVinMJMatchBtagTandP_jetID_TurnOn",               fileName2017}} },
+    {bTagTurnOn::PFCSV,                 {{"pt_CaloCSVinMJMatchBtagTandP_jetID_TurnOn",               fileName2017}} },///HACK FIXME 
     {bTagTurnOn::CaloCSV,               {{"pt_CaloCSVinMJMatchBtagTandP_jetID_TurnOn",             fileName2017}} },
     {bTagTurnOn::CaloCSV2b100,          {{"pt_CaloCSVinMJ2b100MatchBtagTandP_jetID_TurnOn",        fileName2017}} },
-    {bTagTurnOn::Calo100BTag,           {{"pt_Calo100inMJMatchBtagTandP_jetID_TurnOn",             fileName2017}} },
+    //{bTagTurnOn::Calo100BTag,           {{"pt_Calo100inMJMatchBtagTandP_jetID_TurnOn",             fileName2017}} },
+    {bTagTurnOn::Calo100BTag,           {{"pt_Calo100ANDCaloCSVinMJMatchBtagTandP_jetID_TurnOn",             fileName2017}} },
   };
 
   //
   // Ht Config
   //
   HTConfig = {
-    {hTTurnOn::L1ORAll_Ht300_4j_3b,       {{"hT30_L1ORAll_TurnOn",      fileName2017}} },
+    //{hTTurnOn::L1ORAll_Ht300_4j_3b,       {{"hT30_L1ORAll_TurnOn",      fileName2017}} },
+    {hTTurnOn::L1ORAll_Ht300_4j_3b,       {{"hT30_L1ORAll_TurnOn_4Jet2Tag", fileName2017}} },
     {hTTurnOn::CaloHt300,                 {{"hT30_CaloHt300_TurnOn",    fileName2017}} },
     {hTTurnOn::PFHt300,                   {{"hT30_PFHt300_TurnOn",      fileName2017}} },
   };
@@ -362,7 +370,7 @@ void TrigEmulatorTool::config2017(){
 void TrigEmulatorTool::config2016(){
 
   cout << "TrigEmulatorTool::configuring for 2016 " << endl;
-  std::string fileName2016 = "haddOutput_All_MC2016_4Sep_fittedTurnOns.root";
+  std::string fileName2016 = "haddOutput_All_MC2016_16Sep_fittedTurnOns.root";
 
   //
   //  Jet Emulator
@@ -394,8 +402,10 @@ void TrigEmulatorTool::config2016(){
   // HT Config
   //
   HTConfig = {
-    {hTTurnOn::L1ORAll_4j_3b,       {{"hT30_L1ORAll_TurnOn",      fileName2016}} },
-    {hTTurnOn::L1ORAll_2j_2j_3b,    {{"hT30_L1ORAll_2j_2j_3b_TurnOn",      fileName2016}} },
+    {hTTurnOn::L1ORAll_4j_3b,       {{"hT30_L1ORAll_TurnOn_4Jet2Tag", fileName2016}} },
+    //{hTTurnOn::L1ORAll_4j_3b,       {{"hT30_L1ORAll_TurnOn",      fileName2016}} },
+    {hTTurnOn::L1ORAll_2j_2j_3b,    {{"hT30_L1ORAll_2j_2j_3b_TurnOn_4Jet2Tag",      fileName2016}} },
+    //{hTTurnOn::L1ORAll_2j_2j_3b,    {{"hT30_L1ORAll_2j_2j_3b_TurnOn",      fileName2016}} },
   };
 
 
