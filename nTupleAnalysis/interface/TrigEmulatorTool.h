@@ -109,7 +109,7 @@ namespace TriggerEmulator {
 
   public:
 
-    TrigEmulatorTool(std::string name, int mode = 1, unsigned int nToys=1000, std::string year = "2018", bool debug = false);
+    TrigEmulatorTool(std::string name, int mode = 1, unsigned int nToys=1000, std::string year = "2018", bool debug = false, bool useMCTurnOns = false);
 
     // Just HT 
     void AddTrig(std::string trigName,  const std::vector<hTTurnOn>& HTNames);
@@ -172,8 +172,10 @@ namespace TriggerEmulator {
 
     std::string m_name;
     unsigned int m_nToys;
-    
     bool m_debug;
+    bool m_useMCTurnOns;
+    
+
     TRandom3*           m_rand        = nullptr;
 
     std::map<hTTurnOn,   std::array<std::string, 2> >  HTConfig;
