@@ -109,7 +109,7 @@ namespace TriggerEmulator {
 
   public:
 
-    TrigEmulatorTool(std::string name, int mode = 1, unsigned int nToys=1000, std::string year = "2018", bool debug = false, bool useMCTurnOns = false);
+    TrigEmulatorTool(std::string name, unsigned int nToys=1000, std::string year = "2018", bool debug = false, bool useMCTurnOns = false);
 
     // Just HT 
     void AddTrig(std::string trigName,  const std::vector<hTTurnOn>& HTNames);
@@ -127,7 +127,7 @@ namespace TriggerEmulator {
     void AddTrig(std::string trigName,  const std::vector<hTTurnOn>& HTNames, const std::vector<jetTurnOn>&  JetNames, const std::vector<unsigned int>& JetMults, const std::vector<bTagTurnOn>& TagNames, const std::vector<unsigned int>& TagMults);
 
     //
-    //  Sets decisions for all configured triggers (involves random numbers if mode == 1)
+    //  Sets decisions for all configured triggers (involves random numbers)
     //
     void SetDecisions(const std::vector<float>& offline_jet_pts, const std::vector<float>& offline_btagged_jet_pts, float ht=-1);
 
@@ -138,7 +138,7 @@ namespace TriggerEmulator {
     bool Passed      (std::string trigName) { return GetDecision(trigName); }
 
     //
-    //  Sets weights for all configured triggers, which is the average nPass over nToys (involves random numbers if mode == 1)
+    //  Sets weights for all configured triggers, which is the average nPass over nToys (involves random numbers)
     //
     void SetWeights(const std::vector<float>& offline_jet_pts, const std::vector<float>& offline_btagged_jet_pts, float ht=-1);
     //void SetWeightsOR(const std::vector<float>& offline_jet_pts, const std::vector<float>& offline_btagged_jet_pts, float ht=-1);

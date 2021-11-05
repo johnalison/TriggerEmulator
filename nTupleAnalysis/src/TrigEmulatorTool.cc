@@ -10,7 +10,7 @@ using namespace TriggerEmulator;
 using std::cout;  using std::endl;
 using std::vector;  using std::string; using std::array;
 
-TrigEmulatorTool::TrigEmulatorTool(string name, int mode, unsigned int nToys, string year, bool debug, bool useMCTurnOns) :  m_name(name),  m_nToys(nToys), m_debug(debug), m_useMCTurnOns(useMCTurnOns)
+TrigEmulatorTool::TrigEmulatorTool(string name, unsigned int nToys, string year, bool debug, bool useMCTurnOns) :  m_name(name),  m_nToys(nToys), m_debug(debug), m_useMCTurnOns(useMCTurnOns)
 {
   m_rand = new TRandom3();
 
@@ -257,6 +257,7 @@ void TrigEmulatorTool::config2018(){
   cout << "TrigEmulatorTool::configuring for 2018 " << endl;
 
   std::string fileName2018 = m_useMCTurnOns ? "haddOutput_All_MC2018_16Sep_fittedTurnOns.root" : "haddOutput_All_Data2018_16Sep_fittedTurnOns.root" ;
+  cout << "TrigEmulatorTool::using file \t " << fileName2018 << endl;
 
   //
   //  Jet Emulator
@@ -317,6 +318,7 @@ void TrigEmulatorTool::config2017(){
 
   cout << "TrigEmulatorTool::configuring for 2017 " << endl;
   std::string fileName2017 = m_useMCTurnOns ? "haddOutput_All_MC2017_16Sep_fittedTurnOns.root" : "haddOutput_All_Data2017_16Sep_fittedTurnOns.root" ;
+  cout << "TrigEmulatorTool::using file \t " << fileName2017 << endl;
 
   //
   //  Jet Emulator
@@ -371,6 +373,7 @@ void TrigEmulatorTool::config2016(){
 
   cout << "TrigEmulatorTool::configuring for 2016 " << endl;
   std::string fileName2016 = m_useMCTurnOns ? "haddOutput_All_MC2016_16Sep_fittedTurnOns.root" : "haddOutput_All_Data2016_16Sep_fittedTurnOns.root" ;
+  cout << "TrigEmulatorTool::using file \t " << fileName2016 << endl;
 
   //
   //  Jet Emulator
