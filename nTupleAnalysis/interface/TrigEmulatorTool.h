@@ -95,11 +95,21 @@ namespace TriggerEmulator {
     PFDeepCSV,
     CaloDeepCSV,
     CaloDeepCSV2b116,
+    Calo100BTag,
+
     PFCSV,
     CaloCSV,
-      CaloCSV2b100,
+    CaloCSV2b100,
+    PFCSVloose,
+    CaloCSVloose,
+    CaloCSV2b100loose,
 
-      Calo100BTag,
+    PFDeepCSVloose,
+    CaloDeepCSVloose,
+    CaloDeepCSV2b116loose,
+    Calo100BTagloose,
+
+
   };
 
   //
